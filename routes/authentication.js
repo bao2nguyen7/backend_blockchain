@@ -48,24 +48,25 @@ authenRouter.post("/signin", async(req, res) => {
 
 //TokenIsValid
 authenRouter.post("/tokenIsValid", async(req, res) => {
-    try {
-        const token = req.header('x-auth-token');
+        try{
+        const token = req.header['x-auth-token'];
         if(!token) return res.json(false);
         const verified = jwt.verify(token,'passwordKey');
         if(!verified) return res.json(false);
 
-        const user = await User.findById(verified.id);
-        if(!user) return res.json(false);
-        res.json(true);
-    } catch (error) {
+        const User = await user.findById(verified.id);
+        if(!User) return res.json(false);
+        res.json({msg:"Successfully verified"});
+}
+    catch (error) {
         res.status(500).json({error: error.message});
     }
 });
 
 //getUserData
 authenRouter.get("/", auth, async (req, res) => {
-    const user = await User.findById(req.user);
-    res.json({ ...user._doc, token: req.token });
+    const User = await user.findById(req.user);
+    res.json({ ...User._doc, token: req.token });
 });
 
 module.exports = authenRouter;

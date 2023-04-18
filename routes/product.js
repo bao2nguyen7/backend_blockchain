@@ -1,7 +1,7 @@
 const express = require('express');
 const productRouter = express.Router();
 const products = require('../middlewares/product');
-const Product = require('../models/product');
+const {Product} = require('../models/product');
 //Add-product
 productRouter.post("/product/add-product", products, async (req, res) => {
     try {
@@ -10,13 +10,32 @@ productRouter.post("/product/add-product", products, async (req, res) => {
             name,
             address,
             time,
-            image,
+            images,
             description,
         })
-        product = await products.save();
+        product = await product.save();
         res.json(product);
     } catch (e) {
         res.status(500).json({error: e.message});
     }
 })
+productRouter.get("/product/get-products", products, async (req, res) => {
+    try {
+        const products = await Product.find({});
+        res.json(products);
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
+  // Delete the product
+productRouter.post("/product/delete-product", products, async (req, res) => {
+    try {
+        const { id } = req.body;
+        let product = await Product.findByIdAndDelete(id);
+        res.json(product);
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+  });
 module.exports = productRouter;

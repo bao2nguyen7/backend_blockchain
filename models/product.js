@@ -2,20 +2,13 @@ const mongoose = require("mongoose");
 
 const productsSchema = new mongoose.Schema(
   {
-    id:{
-      required: true,
+    userId:{
       type: String,
-      trim: true
+      required: true
     },
     name:{
       required: true,
       type: String,
-      trim: true
-    },
-    pId:{ type: String, unique: true, index: true, sparse:true},
-    status:{
-      required: true,
-      type: Boolean,
       trim: true
     },
     time:{
@@ -23,16 +16,12 @@ const productsSchema = new mongoose.Schema(
       type: String,
       trim: true
     },
-    image:[{
+    images:[{
       type: String,
       required: true
     },],
     address:{
       required: true,
-      type: String,
-      trim: true
-    },
-    detail:{
       type: String,
       trim: true
     },
@@ -46,5 +35,5 @@ const productsSchema = new mongoose.Schema(
   }
 );
 
-const products = mongoose.model("product", productsSchema);
+const products = mongoose.model("products", productsSchema);
 module.exports = products; 

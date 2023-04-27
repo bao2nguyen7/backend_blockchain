@@ -1,41 +1,70 @@
 const express = require('express');
 const productRouter = express.Router();
-const products = require('../middlewares/product');
-const {Product} = require('../models/product');
+const product = require('../middlewares/product');
+const Product = require('../models/product');
+const User = require('../models/user');
 //Add-product
-productRouter.post("/product/add-product", products, async (req, res) => {
+productRouter.post("/product/add-product", product, async (req, res) => {
     try {
-        const {name, address, images, description, time} = req.body;
-        let product = new Product({
+        const {name, time, images, address, description} = req.body;
+        let newProduct = new Product({
             name,
-            address,
             time,
             images,
+            address,
             description,
-        })
-        product = await product.save();
-        res.json(product);
+            userId: req.user
+        });
+        const saveProduct = await newProduct.save();
+
+        if(req.user){
+            const user = User.findById(req.user);
+            await user.updateOne({$push:{products: saveProduct}});
+        }
+        return res.json({success:true, data: saveProduct, message: "Product added successfully"});
     } catch (e) {
-        res.status(500).json({error: e.message});
+        res.status(500).json({success:false,error: e.message});
     }
 })
-productRouter.get("/product/get-products", products, async (req, res) => {
+//getAll product
+productRouter.get("/product/get-product", product, async (req, res) => {
     try {
-        const products = await Product.find({});
-        res.json(products);
+        const products = await Product.find();
+        res.json({success:true,data:products});
+    } catch (e) {
+        res.status(500).json({ success:false,error: e.message });
+    }
+});
+//getAn product
+productRouter.get("/product/get-product/:id", product, async (req, res) => {
+    try {
+        const products = await Product.findById(req.params.id).populate("userId");
+        res.json({success:true,data:products});
+    } catch (e) {
+        res.status(500).json({ success:false,error: e.message });
+    }
+});
+//update product
+productRouter.put("/product/update-product/:id", product, async (req, res) => {
+    try {
+        const products = await Product.findById(req.params.id);
+        await products.updateOne({$set: req.body});
+        res.status(200).json({success:true,data:products,message:"Updated successfully"});
+    } catch (e) {
+        res.status(500).json({ success:false,error: e.message });
+    }
+});
+  // Delete the product
+productRouter.delete("/product/delete-product/:id", product, async (req, res) => {
+    try {
+        await User.updateMany(
+            {products: req.params.id},
+            {$pull:{products: req.params.id}}
+        );
+        let product = await Product.findByIdAndDelete(req.params.id);
+        res.status(200).json({data:product,message:"Delete Successfully"});
     } catch (e) {
         res.status(500).json({ error: e.message });
     }
 });
-
-  // Delete the product
-productRouter.post("/product/delete-product", products, async (req, res) => {
-    try {
-        const { id } = req.body;
-        let product = await Product.findByIdAndDelete(id);
-        res.json(product);
-    } catch (e) {
-        res.status(500).json({ error: e.message });
-    }
-  });
 module.exports = productRouter;

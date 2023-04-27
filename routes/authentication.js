@@ -22,7 +22,7 @@ authenRouter.post("/signup", async(req, res) => {
             userType
         });
         User = await User.save();
-        res.json(User);
+        res.json({success:true,data:User, message:"Added successfully"});
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -62,11 +62,15 @@ authenRouter.post("/tokenIsValid", async(req, res) => {
         res.status(500).json({error: error.message});
     }
 });
-
-//getUserData
+//getAllUserData
 authenRouter.get("/", auth, async (req, res) => {
-    const User = await user.findById(req.user);
-    res.json({ ...User._doc, token: req.token });
+    const User = await user.find();
+    res.json({ data:User,...User._doc, token: req.token });
+});
+//getAnUserData
+authenRouter.get("/:id", auth, async (req, res) => {
+    const User = await user.findById(req.params.id);
+    res.json({ data:User, token: req.token });
 });
 
 module.exports = authenRouter;

@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const productsSchema = require("./product");
 const userSchema = new mongoose.Schema(
   {
     name:{
@@ -30,6 +30,12 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "user",
     },
+    products:[
+      {
+        type: mongoose.Schema.Types.Map,
+        ref: "products"
+      }
+    ]
     // list: {type: mongoose.Types.ObjectId, ref: "list"}
   },
   {

@@ -2,30 +2,33 @@ const mongoose = require("mongoose");
 
 const listProductSchema = new mongoose.Schema(
   {
-    id:{
-      required: true,
-      type: Number,
-      trim: true
+    userId:{
+      type: String,
+      required: true
+    },
+    productId:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "products"
     },
     name:{
       required: true,
       type: String,
       trim: true
     },
-    pId:{ type: String, unique: true, index: true, sparse:true},
     status:{
       required: true,
-      type: Boolean,
-      trim: true
+      type: Number,
+      default: 0,
     },
     time:{
       required: true,
       type: String,
       trim: true
     },
-    image:{
+    images:[{
       type: String,
-    },
+      required: true
+    },],
     address:{
       required: true,
       type: String,

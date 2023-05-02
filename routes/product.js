@@ -38,7 +38,7 @@ productRouter.get("/product/get-product", product, async (req, res) => {
 //getAn product
 productRouter.get("/product/get-product/:id", product, async (req, res) => {
     try {
-        const products = await Product.findById(req.params.id).populate("userId");
+        const products = await Product.findById(req.params.id);
         res.json({success:true,data:products});
     } catch (e) {
         res.status(500).json({ success:false,error: e.message });

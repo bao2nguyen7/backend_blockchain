@@ -28,7 +28,13 @@ const productsSchema = new mongoose.Schema(
     description:{
       type: String,
       trim: true
-    }
+    },
+    tracking: [
+      {
+        type: mongoose.Schema.Types.Map,
+        ref: "list"
+      }
+    ]
   },
   {
     collection: "products"

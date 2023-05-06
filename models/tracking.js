@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const listProductSchema = new mongoose.Schema(
+const trackingProductSchema = new mongoose.Schema(
   {
     userId:{
       type: String,
@@ -45,9 +45,9 @@ const listProductSchema = new mongoose.Schema(
     }
   },
   {
-    collection: "list"
+    collection: "tracking"
   }
 );
 
-const list = mongoose.model("list", listProductSchema);
-module.exports = list;
+const tracking = mongoose.model("tracking", trackingProductSchema);
+module.exports = tracking;

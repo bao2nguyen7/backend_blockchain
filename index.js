@@ -1,7 +1,7 @@
 //Import orther file
 const authenRouter = require("./routes/authentication");
 const productRouter = require("./routes/product");
-const listRouter = require("./routes/list");
+const trackingRouter = require("./routes/tracking");
 
 //Import library
 const express = require("express");
@@ -26,7 +26,7 @@ mongoose
 //middleware server
 app.use(authenRouter);
 app.use(productRouter);
-app.use(listRouter);
+app.use(trackingRouter);
 
 
 

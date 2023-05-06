@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const User = require('../models/user');
 
-const list = async (req, res, next) => {
+const tracking = async (req, res, next) => {
     try {
         const token = req.header("x-auth-token");
         if (!token)
@@ -23,4 +23,4 @@ const list = async (req, res, next) => {
         res.status(500).json({ error: err.message });
     }
 }
-module.exports = list;
+module.exports = tracking;

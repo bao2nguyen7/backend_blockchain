@@ -2,6 +2,8 @@
 const authenRouter = require("./routes/authentication");
 const productRouter = require("./routes/product");
 const trackingRouter = require("./routes/tracking");
+const processRouter = require("./routes/process");
+
 
 //Import library
 const express = require("express");
@@ -27,6 +29,7 @@ mongoose
 app.use(authenRouter);
 app.use(productRouter);
 app.use(trackingRouter);
+app.use(processRouter);
 
 
 

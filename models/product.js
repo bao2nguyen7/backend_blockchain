@@ -32,7 +32,7 @@ const productsSchema = new mongoose.Schema(
     tracking: [
       {
         type: mongoose.Schema.Types.Map,
-        ref: "list"
+        ref: "tracking"
       }
     ]
   },

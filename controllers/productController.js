@@ -18,7 +18,7 @@ const productController = {
     
             if(req.user){
                 const user = User.findById(req.user);
-                await user.updateOne({$push:{products: saveProduct}});
+                await user.updateOne({$push:{products: saveProduct._id}});
             }
             return res.json({success:true, data: saveProduct, message: "Product added successfully"});
         } catch (e) {

@@ -6,10 +6,6 @@ const trackingProductSchema = new mongoose.Schema(
       type: String,
       required: true
     },
-    productId:{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "products"
-    },
     name:{
       required: true,
       type: String,
@@ -40,6 +36,10 @@ const trackingProductSchema = new mongoose.Schema(
     },
     description:{
       required: true,
+      type: String,
+      trim: true
+    },
+    url:{
       type: String,
       trim: true
     }

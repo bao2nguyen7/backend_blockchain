@@ -29,9 +29,13 @@ const productsSchema = new mongoose.Schema(
       type: String,
       trim: true
     },
+    url:{
+      type: String,
+      trim: true
+    },
     tracking: [
       {
-        type: mongoose.Schema.Types.Map,
+        type: mongoose.Schema.Types.ObjectId,
         ref: "tracking"
       }
     ]

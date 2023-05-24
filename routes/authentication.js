@@ -13,5 +13,7 @@ authenRouter.post("/tokenIsValid", authController.tokenIsValid);
 authenRouter.get("/", auth, authController.getAllAuth);
 //getAnUserData
 authenRouter.get("/getAnAuth", auth, authController.getAnAuth);
+//GetEachUserInAdmin
+authenRouter.get("/admin/:id", auth, authController.getUserFromAdmin);
 
 module.exports = authenRouter;

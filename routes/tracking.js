@@ -6,6 +6,7 @@ const trackingRouter = express.Router();
 
 trackingRouter.post("/tracking/add-tracking/:id", tracking, trackingController.addTracking)
 trackingRouter.get("/tracking/get-tracking", tracking, trackingController.getTracking)
+trackingRouter.delete("/tracking/delete-tracking/:id", tracking, trackingController.deleteTracking)
 
 
 module.exports = trackingRouter;

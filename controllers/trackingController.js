@@ -36,6 +36,18 @@ const trackingController = {
         } catch (error) {
             res.status(500).json({success:false,error: e.message});
         }
+    },
+    deleteTracking: async(req,res)=>{
+        try {
+            await Product.updateMany(
+                {tracking: req.params.id},
+                {$pull:{tracking: req.params.id}}
+            );
+            let tracking = await Tracking.findByIdAndDelete(req.params.id);
+            res.status(200).json({data:tracking,message:"Delete Successfully"});
+        } catch (e) {
+            res.status(500).json({ error: e.message });
+        }
     }
 };
 

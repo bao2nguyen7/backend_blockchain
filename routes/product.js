@@ -6,7 +6,7 @@ const productController = require('../controllers/productController');
 //Add-product
 productRouter.post("/product/add-product", product, productController.addProduct);
 //getAll product
-productRouter.get("/product/get-product", product, productController.getAllProduct);
+productRouter.get("/product/get-product", product,productController.getAllProduct);
 //getAn product
 productRouter.get("/product/get-product/:id", product, productController.getAnProduct);
 //update product

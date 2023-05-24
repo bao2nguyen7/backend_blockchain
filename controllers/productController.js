@@ -18,7 +18,7 @@ const productController = {
     
             if(req.user){
                 const user = User.findById(req.user);
-                await user.updateOne({$push:{products: saveProduct._id}});
+                await user.updateOne({$push:{products: saveProduct}});
             }
             return res.json({success:true, data: saveProduct, message: "Product added successfully"});
         } catch (e) {
@@ -48,6 +48,10 @@ const productController = {
         try {
             const products = await Product.findById(req.params.id);
             await products.updateOne({$set: req.body});
+            if(req.user){
+                const user = User.findById(req.user);
+                await user.updateOne({$set:{products: products}});
+            }
             res.status(200).json({success:true,data:products,message:"Updated successfully"});
         } catch (e) {
             res.status(500).json({ success:false,error: e.message });
@@ -56,10 +60,6 @@ const productController = {
     //deleteProduct
     deleteProduct: async (req, res) => {
         try {
-            await User.updateMany(
-                {products: req.params.id},
-                {$pull:{products: req.params.id}}
-            );
             let product = await Product.findByIdAndDelete(req.params.id);
             res.status(200).json({data:product,message:"Delete Successfully"});
         } catch (e) {

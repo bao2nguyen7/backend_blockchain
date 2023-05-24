@@ -1,12 +1,25 @@
 const Tracking = require('../models/tracking');
 const Product = require('../models/product');
 const User = require('../models/user');
+const {
+    addTracking,
+    getTracking
+} = require('../scripts/Tracking')
+
 
 const trackingController = {
     // addTracking
-    addTracking : async (req, res) => {
+    addTracking: async (req, res) => {
         try {
-            const {name, time, images, address, description} = req.body;
+            const {
+                name,
+                time,
+                images,
+                address,
+                description
+            } = req.body;
+            const pid = req.params.id;
+
             let newTracking = new Tracking({
                 name,
                 time,
@@ -16,32 +29,50 @@ const trackingController = {
                 userId: req.user
             });
             const saveTracking = await newTracking.save();
-            // if(req.params.id){
-            //     const product =Product.findById(req.params.id);
-            //     await product.updateOne({$push:{tracking: saveTracking}});
-            //     const user = await User.findById(req.user);
-            //     const productArrayUser = user.products
-            //     for (const productE of productArrayUser){
-            //         if(productE._id === product.id){
-            //             productE.updateOne({$push:{tracking: saveTracking}});
-            //             break;
-            //         }
-            //     }
-    
-            // }
-            return res.json({success:true, data: saveTracking, message: "Tracking added successfully"});
+            const product = Product.findById(req.params.id);
+            console.log("product id:", pid)
+            await product.updateOne({
+                $push: {
+                    tracking: saveTracking
+                }
+            });
+
+            let receipt = await addTracking(pid, saveTracking.userId, saveTracking.id, name, address, time);
+            console.log(receipt);
+
+            return res.json({
+                success: true,
+                receipt: receipt,
+                data: saveTracking,
+                message: "Tracking added successfully"
+            });
         } catch (e) {
-            res.status(500).json({success:false,error: e.message});
+            res.status(500).json({
+                success: false,
+                error: e.message
+            });
         }
     },
     //getTracking
-    getTracking: async (req,res)=>{
+    getTracking: async (req, res) => {
         try {
-            const {productID} = req.body;
-            const product = await Product.findById(productID);
-            res.status(200).json({success:true,data:product.tracking});
+            const {
+                uid
+            } = req.body;
+
+            const tracking = await Tracking.find();
+            const track = await getTracking(uid);
+
+            res.status(200).json({
+                success: true,
+                data: tracking,
+                dataBC: track
+            });
         } catch (error) {
-            res.status(500).json({success:false,error: e.message});
+            res.status(500).json({
+                success: false,
+                error: e.message
+            });
         }
     }
 };

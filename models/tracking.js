@@ -42,6 +42,10 @@ const trackingProductSchema = new mongoose.Schema(
       required: true,
       type: String,
       trim: true
+    },
+    url:{
+      type: String,
+      trim: true
     }
   },
   {

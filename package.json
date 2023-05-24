@@ -10,15 +10,21 @@
   "author": "khoa",
   "license": "ISC",
   "dependencies": {
+    "@openzeppelin/contracts": "^4.8.3",
+    "@truffle/hdwallet-provider": "^2.1.11",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "ganache": "^7.8.0",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.0.1",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "solc": "^0.8.20",
+    "truffle": "^5.9.1"
   },
   "devDependencies": {
+    "ethers": "^5.7.2",
     "nodemon": "^2.0.22"
   }
 }

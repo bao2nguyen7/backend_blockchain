@@ -1,0 +1,322 @@
+{
+	"_format": "hh-sol-artifact-1",
+	"contractName": "Api",
+	"sourceName": "contracts/Api.sol",
+	"abi":[
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_admin",
+					"type": "address"
+				},
+				{
+					"internalType": "string",
+					"name": "_pid",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "_uid",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "_id",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "_name",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "_location",
+					"type": "string"
+				},
+				{
+					"internalType": "uint256",
+					"name": "_trackedTime",
+					"type": "uint256"
+				}
+			],
+			"name": "addTracking",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "string",
+					"name": "_pid",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "_uid",
+					"type": "string"
+				}
+			],
+			"name": "createProduct",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "renounceOwnership",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"stateMutability": "nonpayable",
+			"type": "constructor"
+		},
+		{
+			"anonymous": false,
+			"inputs": [
+				{
+					"indexed": true,
+					"internalType": "address",
+					"name": "previousOwner",
+					"type": "address"
+				},
+				{
+					"indexed": true,
+					"internalType": "address",
+					"name": "newOwner",
+					"type": "address"
+				}
+			],
+			"name": "OwnershipTransferred",
+			"type": "event"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "newOwner",
+					"type": "address"
+				}
+			],
+			"name": "transferOwnership",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "string",
+					"name": "_pid",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "_uid",
+					"type": "string"
+				}
+			],
+			"name": "checkProductExists",
+			"outputs": [
+				{
+					"internalType": "bool",
+					"name": "",
+					"type": "bool"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "getAllListProducts",
+			"outputs": [
+				{
+					"components": [
+						{
+							"internalType": "string",
+							"name": "id",
+							"type": "string"
+						},
+						{
+							"internalType": "string",
+							"name": "uid",
+							"type": "string"
+						}
+					],
+					"internalType": "struct Api.AllProducts[]",
+					"name": "",
+					"type": "tuple[]"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "string",
+					"name": "_uid",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "_pid",
+					"type": "string"
+				}
+			],
+			"name": "getProductID",
+			"outputs": [
+				{
+					"components": [
+						{
+							"internalType": "string",
+							"name": "pid",
+							"type": "string"
+						},
+						{
+							"internalType": "string",
+							"name": "uid",
+							"type": "string"
+						},
+						{
+							"components": [
+								{
+									"internalType": "address",
+									"name": "admin",
+									"type": "address"
+								},
+								{
+									"internalType": "string",
+									"name": "pid",
+									"type": "string"
+								},
+								{
+									"internalType": "string",
+									"name": "uid",
+									"type": "string"
+								},
+								{
+									"internalType": "string",
+									"name": "id",
+									"type": "string"
+								},
+								{
+									"internalType": "string",
+									"name": "name",
+									"type": "string"
+								},
+								{
+									"internalType": "string",
+									"name": "location",
+									"type": "string"
+								},
+								{
+									"internalType": "uint256",
+									"name": "trackedTime",
+									"type": "uint256"
+								}
+							],
+							"internalType": "struct Api.Tracking[]",
+							"name": "trackingList",
+							"type": "tuple[]"
+						}
+					],
+					"internalType": "struct Api.Product",
+					"name": "",
+					"type": "tuple"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "string",
+					"name": "_uid",
+					"type": "string"
+				}
+			],
+			"name": "getTrackingList",
+			"outputs": [
+				{
+					"components": [
+						{
+							"internalType": "address",
+							"name": "admin",
+							"type": "address"
+						},
+						{
+							"internalType": "string",
+							"name": "pid",
+							"type": "string"
+						},
+						{
+							"internalType": "string",
+							"name": "uid",
+							"type": "string"
+						},
+						{
+							"internalType": "string",
+							"name": "id",
+							"type": "string"
+						},
+						{
+							"internalType": "string",
+							"name": "name",
+							"type": "string"
+						},
+						{
+							"internalType": "string",
+							"name": "location",
+							"type": "string"
+						},
+						{
+							"internalType": "uint256",
+							"name": "trackedTime",
+							"type": "uint256"
+						}
+					],
+					"internalType": "struct Api.Tracking[]",
+					"name": "",
+					"type": "tuple[]"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "owner",
+			"outputs": [
+				{
+					"internalType": "address",
+					"name": "",
+					"type": "address"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "showOwner",
+			"outputs": [
+				{
+					"internalType": "address",
+					"name": "",
+					"type": "address"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		}
+	]
+}
+

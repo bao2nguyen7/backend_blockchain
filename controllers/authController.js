@@ -67,8 +67,13 @@ const authController = {
     getAnAuth : async (req, res) => {
         const User = await user.findById(req.user);
         res.json({ data:User, token: req.token });
+    },
+    //GetEachUserInAdmin
+    getUserFromAdmin : async (req, res) => {
+        const User = await user.findById(req.params.id);
+        res.json({ data:User, token: req.token });
     }
-
+    
 };
 
 module.exports = authController;

@@ -29,7 +29,6 @@ const trackingController = {
                 userId: req.user
             });
             const saveTracking = await newTracking.save();
-<<<<<<< HEAD
             const product = Product.findById(req.params.id);
             console.log("product id:", pid)
             await product.updateOne({
@@ -47,15 +46,6 @@ const trackingController = {
                 data: saveTracking,
                 message: "Tracking added successfully"
             });
-=======
-            if(req.params.id){
-                const product =Product.findById(req.params.id);
-                await product.updateOne({$push:{tracking: saveTracking}});
-                
-    
-            }
-            return res.json({success:true, data: saveTracking, message: "Tracking added successfully"});
->>>>>>> a3577e8e4ebfc5a1048907604478957131c92532
         } catch (e) {
             res.status(500).json({
                 success: false,
@@ -66,7 +56,6 @@ const trackingController = {
     //getTracking
     getTracking: async (req, res) => {
         try {
-<<<<<<< HEAD
             const {
                 uid
             } = req.body;
@@ -79,11 +68,7 @@ const trackingController = {
                 data: tracking,
                 dataBC: track
             });
-=======
-            // const {productID} = req.body;
-            const tracking = await Tracking.find();
-            res.status(200).json({success:true,data:tracking});
->>>>>>> a3577e8e4ebfc5a1048907604478957131c92532
+
         } catch (error) {
             res.status(500).json({
                 success: false,

@@ -33,15 +33,11 @@ const productController = {
 
             if (req.user) {
                 const user = User.findById(req.user);
-<<<<<<< HEAD
                 await user.updateOne({
                     $push: {
                         products: saveProduct
                     }
                 });
-=======
-                await user.updateOne({$push:{products: saveProduct._id}});
->>>>>>> a3577e8e4ebfc5a1048907604478957131c92532
             }
 
             const receipt = await createProduct(saveProduct.id, saveProduct.userId);

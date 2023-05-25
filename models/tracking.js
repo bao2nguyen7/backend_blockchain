@@ -6,6 +6,10 @@ const trackingProductSchema = new mongoose.Schema(
       type: String,
       required: true
     },
+    productID:{
+      type: String,
+      required: true 
+    },
     name:{
       required: true,
       type: String,

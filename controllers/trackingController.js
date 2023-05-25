@@ -27,6 +27,7 @@ const trackingController = {
                 images,
                 address,
                 description,
+                productID:pid,
                 url:"",
                 userId: req.user
             });
@@ -61,12 +62,8 @@ const trackingController = {
     //getTracking
     getTracking: async (req, res) => {
         try {
-            const {
-                pid
-            } = req.body;
-
             const tracking = await Tracking.find();
-            const track = await getTracking(pid);
+            const track = await getTracking(req.params.id);
 
             res.status(200).json({
                 success: true,

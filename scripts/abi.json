@@ -49,6 +49,11 @@
 		{
 			"inputs": [
 				{
+					"internalType": "address",
+					"name": "_admin",
+					"type": "address"
+				},
+				{
 					"internalType": "string",
 					"name": "_pid",
 					"type": "string"
@@ -57,16 +62,19 @@
 					"internalType": "string",
 					"name": "_uid",
 					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "_name",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "_location",
+					"type": "string"
 				}
 			],
 			"name": "createProduct",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [],
-			"name": "renounceOwnership",
 			"outputs": [],
 			"stateMutability": "nonpayable",
 			"type": "function"
@@ -96,6 +104,70 @@
 			"type": "event"
 		},
 		{
+			"anonymous": false,
+			"inputs": [
+				{
+					"indexed": false,
+					"internalType": "string",
+					"name": "uid",
+					"type": "string"
+				},
+				{
+					"indexed": false,
+					"internalType": "string",
+					"name": "pid",
+					"type": "string"
+				}
+			],
+			"name": "productCreated",
+			"type": "event"
+		},
+		{
+			"anonymous": false,
+			"inputs": [
+				{
+					"indexed": false,
+					"internalType": "string",
+					"name": "uid",
+					"type": "string"
+				},
+				{
+					"indexed": false,
+					"internalType": "string",
+					"name": "pid",
+					"type": "string"
+				}
+			],
+			"name": "productDeleted",
+			"type": "event"
+		},
+		{
+			"anonymous": false,
+			"inputs": [
+				{
+					"indexed": false,
+					"internalType": "string",
+					"name": "uid",
+					"type": "string"
+				},
+				{
+					"indexed": false,
+					"internalType": "string",
+					"name": "pid",
+					"type": "string"
+				}
+			],
+			"name": "productUpdated",
+			"type": "event"
+		},
+		{
+			"inputs": [],
+			"name": "renounceOwnership",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
 			"inputs": [
 				{
 					"internalType": "address",
@@ -114,14 +186,33 @@
 					"internalType": "string",
 					"name": "_pid",
 					"type": "string"
-				},
-				{
-					"internalType": "string",
-					"name": "_uid",
-					"type": "string"
 				}
 			],
 			"name": "checkProductExists",
+			"outputs": [
+				{
+					"internalType": "bool",
+					"name": "",
+					"type": "bool"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "string",
+					"name": "_pid",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "_id",
+					"type": "string"
+				}
+			],
+			"name": "checkTrackingExists",
 			"outputs": [
 				{
 					"internalType": "bool",
@@ -161,28 +252,48 @@
 			"inputs": [
 				{
 					"internalType": "string",
-					"name": "_uid",
-					"type": "string"
-				},
-				{
-					"internalType": "string",
 					"name": "_pid",
 					"type": "string"
 				}
 			],
-			"name": "getProductID",
+			"name": "getProduct",
 			"outputs": [
 				{
 					"components": [
 						{
+							"internalType": "address",
+							"name": "admin",
+							"type": "address"
+						},
+						{
 							"internalType": "string",
-							"name": "pid",
+							"name": "id",
 							"type": "string"
 						},
 						{
 							"internalType": "string",
 							"name": "uid",
 							"type": "string"
+						},
+						{
+							"internalType": "string",
+							"name": "name",
+							"type": "string"
+						},
+						{
+							"internalType": "string",
+							"name": "location",
+							"type": "string"
+						},
+						{
+							"internalType": "uint256",
+							"name": "createdTime",
+							"type": "uint256"
+						},
+						{
+							"internalType": "enum Api.ProductStatus",
+							"name": "status",
+							"type": "uint8"
 						},
 						{
 							"components": [
@@ -239,7 +350,7 @@
 			"inputs": [
 				{
 					"internalType": "string",
-					"name": "_uid",
+					"name": "_pid",
 					"type": "string"
 				}
 			],

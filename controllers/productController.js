@@ -3,7 +3,7 @@ const User = require('../models/user');
 const {
     createProduct,
     getAllListProducts,
-    getOneProduct
+    getProduct
 } = require('../scripts/Tracking')
 
 const productController = {
@@ -37,13 +37,13 @@ const productController = {
                 await user.updateOne({$push:{products: saveProduct.id}});
             }
 
-            const receipt = await createProduct(saveProduct.id, saveProduct.userId);
+            const receipt = await createProduct(saveProduct.id, saveProduct.userId, saveProduct.name, saveProduct.address);
             console.log("recript", receipt);
             let result = await Product.findOneAndUpdate({_id:saveProduct.id},{url: receipt},{new:true});
             console.log("URL: ", result.url);
             return res.json({
                 success: true,
-                url: receipt,
+                receipt: receipt,
                 data: result,
                 message: "Product added successfully"
             });
@@ -64,7 +64,7 @@ const productController = {
             res.json({
                 success: true,
                 // data: products,
-                dataBC: productBC,
+                dataSC: productBC,
                 data: products
             });
         } catch (e) {
@@ -78,10 +78,11 @@ const productController = {
     getAnProduct: async (req, res) => {
         try {
             const products = await Product.findById(req.params.id);
-            // const product = getOneProduct(products.id, products.userId);
+            const product = getProduct(products.id);
             res.json({
                 success: true,
-                data: products
+                data: products,
+                dataSC: product
             });
         } catch (e) {
             res.status(500).json({

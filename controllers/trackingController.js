@@ -62,16 +62,16 @@ const trackingController = {
     getTracking: async (req, res) => {
         try {
             const {
-                uid
+                pid
             } = req.body;
 
             const tracking = await Tracking.find();
-            const track = await getTracking(uid);
+            const track = await getTracking(pid);
 
             res.status(200).json({
                 success: true,
+                dataSC: track,
                 data: tracking,
-                dataBC: track
             });
 
         } catch (error) {

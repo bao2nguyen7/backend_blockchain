@@ -16,8 +16,8 @@ const signer = new ethers.Wallet(PRIVATE_KEY, provider);
 
 const contractInstance = new ethers.Contract(contractAddress, abi, signer);
 
-async function createProduct(pid, uid) {
-    const tx = await contractInstance.createProduct(pid, uid, {
+async function createProduct(pid, uid, name, address) {
+    const tx = await contractInstance.createProduct(ADMIN_ADDRESS, pid, uid, name, address, {
         gasLimit: 300000,
     });
 
@@ -38,8 +38,8 @@ async function getAllListProducts() {
     return JSON.stringify(products);
 }
 
-async function getOneProduct(pid, uid) {
-    const product = await contractInstance.getProductID(uid, pid);
+async function getProduct(pid) {
+    const product = await contractInstance.getProduct(pid);
 
     return JSON.stringify(product);
 }
@@ -57,8 +57,8 @@ async function addTracking(pid, uid, id, name, address, time) {
 }
 
 
-async function getTracking(uid) {
-    const allTrackings = await contractInstance.getTrackingList(uid);
+async function getTracking(pid) {
+    const allTrackings = await contractInstance.getTrackingList(pid);
 
     const trackings = allTrackings.map(tracking => ({
         pid: tracking.pid,
@@ -76,7 +76,7 @@ async function getTracking(uid) {
 }
 
 module.exports.createProduct = createProduct;
-module.exports.getOneProduct = getOneProduct;
+module.exports.getProduct = getProduct;
 module.exports.getAllListProducts = getAllListProducts;
 module.exports.addTracking = addTracking;
 module.exports.getTracking = getTracking;

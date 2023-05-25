@@ -15,15 +15,16 @@ const productController = {
                 time,
                 images,
                 address,
-                description
+                description, 
+                url
             } = req.body;
-
             let newProduct = new Product({
                 name,
                 time,
                 images,
                 address,
                 description,
+                url:"",
                 userId: req.user
             });
             const saveProduct = await newProduct.save();
@@ -33,19 +34,17 @@ const productController = {
 
             if (req.user) {
                 const user = User.findById(req.user);
-                await user.updateOne({
-                    $push: {
-                        products: saveProduct
-                    }
-                });
+                await user.updateOne({$push:{products: saveProduct.id}});
             }
 
             const receipt = await createProduct(saveProduct.id, saveProduct.userId);
-
+            console.log("recript", receipt);
+            let result = await Product.findOneAndUpdate({_id:saveProduct.id},{url: receipt},{new:true});
+            console.log("URL: ", result.url);
             return res.json({
                 success: true,
                 url: receipt,
-                data: saveProduct,
+                data: result,
                 message: "Product added successfully"
             });
         } catch (e) {
@@ -65,7 +64,8 @@ const productController = {
             res.json({
                 success: true,
                 // data: products,
-                dataBC: productBC
+                dataBC: productBC,
+                data: products
             });
         } catch (e) {
             res.status(500).json({
@@ -94,14 +94,12 @@ const productController = {
     updateProduct: async (req, res) => {
         try {
             const products = await Product.findById(req.params.id);
-            await products.updateOne({
-                $set: req.body
-            });
-            res.status(200).json({
-                success: true,
-                data: products,
-                message: "Updated successfully"
-            });
+            await products.updateOne({$set: req.body});
+            if(req.user){
+                const user = User.findById(req.user);
+                await user.updateOne({$set:{products: products}});
+            }
+            res.status(200).json({success:true,data:products,message:"Updated successfully"});
         } catch (e) {
             res.status(500).json({
                 success: false,

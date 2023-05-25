@@ -16,7 +16,8 @@ const trackingController = {
                 time,
                 images,
                 address,
-                description
+                description,
+                url
             } = req.body;
             const pid = req.params.id;
 
@@ -26,24 +27,28 @@ const trackingController = {
                 images,
                 address,
                 description,
+                url:"",
                 userId: req.user
             });
             const saveTracking = await newTracking.save();
-            const product = Product.findById(req.params.id);
-            console.log("product id:", pid)
-            await product.updateOne({
-                $push: {
-                    tracking: saveTracking
-                }
-            });
+            if(pid){
+                const product = Product.findById(pid);
+                console.log("product id:", pid)
+                await product.updateOne({
+                    $push: {
+                        tracking: saveTracking.id
+                    }
+                });
+            }
 
-            let receipt = await addTracking(pid, saveTracking.userId, saveTracking.id, name, address, time);
+            const receipt = await addTracking(pid, saveTracking.userId, saveTracking.id, name, address, time);
             console.log(receipt);
-
+            let result = await Tracking.findOneAndUpdate({_id:saveTracking.id},{url: receipt},{new:true});
+            console.log("URL: ", result.url);
             return res.json({
                 success: true,
                 receipt: receipt,
-                data: saveTracking,
+                data: result,
                 message: "Tracking added successfully"
             });
         } catch (e) {
@@ -74,6 +79,18 @@ const trackingController = {
                 success: false,
                 error: e.message
             });
+        }
+    },
+    deleteTracking: async(req,res)=>{
+        try {
+            await Product.updateMany(
+                {tracking: req.params.id},
+                {$pull:{tracking: req.params.id}}
+            );
+            let tracking = await Tracking.findByIdAndDelete(req.params.id);
+            res.status(200).json({data:tracking,message:"Delete Successfully"});
+        } catch (e) {
+            res.status(500).json({ error: e.message });
         }
     }
 };

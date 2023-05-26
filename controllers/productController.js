@@ -35,7 +35,6 @@ const productController = {
             if (req.user) {
                 const user = User.findById(req.user);
                 await user.updateOne({$push:{products: saveProduct.id}});
-                console.log(user.products);
             }
 
             const receipt = await createProduct(saveProduct.id, saveProduct.userId, saveProduct.name, saveProduct.address);
@@ -79,11 +78,11 @@ const productController = {
     getAnProduct: async (req, res) => {
         try {
             const products = await Product.findById(req.params.id);
-            const product = await getOneProduct(req.params.id, req.user);
+            // const product = await getOneProduct(req.params.id, req.user);
             res.json({
                 success: true,
                 data: products,
-                dataBC : product
+                // dataBC : product
             });
         } catch (e) {
             res.status(500).json({

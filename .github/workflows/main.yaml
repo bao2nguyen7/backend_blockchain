@@ -1,0 +1,48 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - devops
+      - main
+  workflow_dispatch:
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - run: sudo apt-get update -y
+      - run: sudo apt-get install -y rsync
+
+      - uses: actions/checkout@v2
+      - name: Use Node.js 16
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16.x"
+      - name: Get Environment Variables
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_REPOSITORY: ${{github.repository}}
+        run: |
+          curl -s -H "Authorization: Bearer $GITHUB_TOKEN" https://api.github.com/repos/bao2nguyen7/backend_blockchain/actions/variables | jq -r '.variables[] | "\(.name)=\(.value)"' > .env
+
+      - name: Deploy to server
+        env:
+          SSHKEY: ${{ secrets.SSHKEY }}
+          HOST: ${{ secrets.HOST }}
+          PORT: ${{ secrets.PORT }}
+          USERNAME: ${{ secrets.USERNAME }}
+        run: |
+          mkdir -p /home/runner/.ssh
+          echo "$SSHKEY" | tr -d '\r' > /home/runner/.ssh/private_key.pem
+          chmod 600 /home/runner/.ssh/private_key.pem
+          ssh-keyscan -p $PORT -H $HOST >> /home/runner/.ssh/known_hosts
+
+          rsync -avz --delete -e "ssh -i /home/runner/.ssh/private_key.pem -p $PORT -o StrictHostKeyChecking=no" --exclude '.git' --exclude 'node_modules' . $USERNAME@$HOST:/backend
+
+          ssh -i /home/runner/.ssh/private_key.pem -p $PORT -o StrictHostKeyChecking=no $USERNAME@$HOST "\
+            cd /backend && \
+            docker-compose -f docker-compose.yml down && \
+            docker-compose -f docker-compose.yml up -d --build \
+          "
+          rm -f /home/runner/.ssh/private_key.pem

@@ -42,7 +42,7 @@ jobs:
 
           ssh -i /home/runner/.ssh/private_key.pem -p $PORT -o StrictHostKeyChecking=no $USERNAME@$HOST "\
             cd /backend && \
-            docker-compose -f docker-compose.yml down && \
-            docker-compose -f docker-compose.yml up -d --build \
+            docker compose -f docker compose.yml down && \
+            docker compose -f docker compose.yml up -d --build \
           "
           rm -f /home/runner/.ssh/private_key.pem

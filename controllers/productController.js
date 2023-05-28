@@ -78,7 +78,7 @@ const productController = {
     getAnProduct: async (req, res) => {
         try {
             const products = await Product.findById(req.params.id);
-            // const product = await getOneProduct(req.params.id, req.user);
+            const product = await getProduct(req.params.id);
             res.json({
                 success: true,
                 data: products,

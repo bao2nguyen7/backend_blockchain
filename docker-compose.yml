@@ -17,3 +17,4 @@ services:
       volumes:
         - ./nginx-config/nginx.conf:/etc/nginx/nginx.conf
         - ./nginx-config/default.conf:/etc/nginx/conf.d/default.conf
+        - ./data:/etc/letsencrypt

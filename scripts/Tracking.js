@@ -44,6 +44,40 @@ async function getProduct(pid) {
     return JSON.stringify(product);
 }
 
+async function updateProduct(pid) {
+    const tx = await contractInstance.updateProduct(ADMIN_ADDRESS, pid, {
+        gasLimit: 300000,
+    });
+
+    tx.wait();
+
+    let receipt = url + tx.hash;
+    return receipt;
+}
+
+async function deleteProduct(pid) {
+    const tx = await contractInstance.deleteProduct(ADMIN_ADDRESS, pid, {
+        gasLimit: 300000,
+    });
+
+    tx.wait();
+
+    let receipt = url + tx.hash;
+    return receipt;
+}
+
+async function deliveryProduct(pid) {
+    const tx = await contractInstance.deliveryProduct(ADMIN_ADDRESS, pid, {
+        gasLimit: 300000,
+    });
+
+    tx.wait();
+
+    let receipt = url + tx.hash;
+    return receipt;
+}
+
+
 async function addTracking(pid, uid, id, name, address, time) {
     const tx = await contractInstance.addTracking(ADMIN_ADDRESS, pid, uid, id, name, address, parseInt(time), {
         gasLimit: 500000
@@ -77,6 +111,10 @@ async function getTracking(pid) {
 
 module.exports.createProduct = createProduct;
 module.exports.getProduct = getProduct;
+module.exports.getProduct = getProduct;
+module.exports.updateProduct = updateProduct;
+module.exports.deleteProduct = deleteProduct;
+module.exports.deliveryProduct = deliveryProduct;
 module.exports.getAllListProducts = getAllListProducts;
 module.exports.addTracking = addTracking;
 module.exports.getTracking = getTracking;

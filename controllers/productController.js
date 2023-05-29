@@ -3,7 +3,10 @@ const User = require('../models/user');
 const {
     createProduct,
     getAllListProducts,
-    getProduct
+    getProduct,
+    updateProduct,
+    deleteProduct,
+    deliveryProduct
 } = require('../scripts/Tracking')
 
 const productController = {
@@ -15,7 +18,7 @@ const productController = {
                 time,
                 images,
                 address,
-                description, 
+                description,
                 url
             } = req.body;
             let newProduct = new Product({
@@ -24,7 +27,7 @@ const productController = {
                 images,
                 address,
                 description,
-                url:"",
+                url: "",
                 userId: req.user
             });
             const saveProduct = await newProduct.save();
@@ -34,12 +37,22 @@ const productController = {
 
             if (req.user) {
                 const user = User.findById(req.user);
-                await user.updateOne({$push:{products: saveProduct.id}});
+                await user.updateOne({
+                    $push: {
+                        products: saveProduct.id
+                    }
+                });
             }
 
             const receipt = await createProduct(saveProduct.id, saveProduct.userId, saveProduct.name, saveProduct.address);
             console.log("recript", receipt);
-            let result = await Product.findOneAndUpdate({_id:saveProduct.id},{url: receipt},{new:true});
+            let result = await Product.findOneAndUpdate({
+                _id: saveProduct.id
+            }, {
+                url: receipt
+            }, {
+                new: true
+            });
             console.log("URL: ", result.url);
             return res.json({
                 success: true,
@@ -82,7 +95,7 @@ const productController = {
             res.json({
                 success: true,
                 data: products,
-                dataBC : product
+                dataBC: product
             });
         } catch (e) {
             res.status(500).json({
@@ -95,12 +108,27 @@ const productController = {
     updateProduct: async (req, res) => {
         try {
             const products = await Product.findById(req.params.id);
-            await products.updateOne({$set: req.body});
-            if(req.user){
+            await products.updateOne({
+                $set: req.body
+            });
+
+            const product = await updateProduct(req.params.id);
+            console.log(product)
+
+            if (req.user) {
                 const user = User.findById(req.user);
-                await user.updateOne({$set:{products: products}});
+                await user.updateOne({
+                    $set: {
+                        products: products
+                    }
+                });
             }
-            res.status(200).json({success:true,data:products,message:"Updated successfully"});
+            res.status(200).json({
+                success: true,
+                data: products,
+                dataSC: product,
+                message: "Updated successfully"
+            });
         } catch (e) {
             res.status(500).json({
                 success: false,
@@ -119,8 +147,12 @@ const productController = {
                 }
             });
             let product = await Product.findByIdAndDelete(req.params.id);
+            const p = await deleteProduct(req.params.id);
+            console.log(p)
+            
             res.status(200).json({
                 data: product,
+                dataSC: p,
                 message: "Delete Successfully"
             });
         } catch (e) {

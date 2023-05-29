@@ -40,10 +40,10 @@ contract Api is Ownable {
     AllProducts[] getAllProducts;
     Tracking public removeMe;
 
-    event productCreated(string uid, string pid);
-    event productUpdated(string uid, string pid);
-    event productDeleted(string uid, string pid);
-    event productDeliveried(string uid, string pid);
+    event productCreated(string pid);
+    event productUpdated(string pid);
+    event productDeleted(string pid);
+    event productDeliveried(string pid);
 
     mapping(string => Product) productList;
     mapping(string => Tracking[]) allTracking;
@@ -111,10 +111,10 @@ contract Api is Ownable {
 
         getAllProducts.push(AllProducts(_pid, _uid));
 
-        emit productCreated(_uid, _pid);
+        emit productCreated(_pid);
     }
 
-    function updateProduct(address _admin, string memory _pid, string memory _uid)
+    function updateProduct(address _admin, string memory _pid)
         external onlyOwner
         // returns (ProductStatus)
     {
@@ -129,12 +129,12 @@ contract Api is Ownable {
         // require(bytes(_pid).length > 0, "Product id cannot be empty");
         productList[_pid].status = ProductStatus.UPDATED;
 
-        emit productUpdated(_pid, _uid);
+        emit productUpdated(_pid);
 
         // return productList[_pid].status;
     }
 
-    function deliveryProduct(address _admin, string memory _pid, string memory _uid)
+    function deliveryProduct(address _admin, string memory _pid)
         external
         // returns (ProductStatus)
     {
@@ -149,12 +149,12 @@ contract Api is Ownable {
         // require(bytes(_pid).length > 0, "Product id cannot be empty");
 
         productList[_pid].status = ProductStatus.DELIVERIED;
-        emit productUpdated(_pid, _uid);
+        emit productDeliveried(_pid);
 
         // return productList[_pid].status;
     }
 
-    function deleteProduct(address _admin, string memory _pid, string memory _uid)
+    function deleteProduct(address _admin, string memory _pid)
         external
         // returns (ProductStatus)
     {
@@ -169,7 +169,7 @@ contract Api is Ownable {
         // require(bytes(_pid).length > 0, "Product id cannot be empty");
 
         productList[_pid].status = ProductStatus.DELETED;
-        emit productUpdated(_pid, _uid);
+        emit productDeleted(_pid);
 
         // return productList[_pid].status;
     }

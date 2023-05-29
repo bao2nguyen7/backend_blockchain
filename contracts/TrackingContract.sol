@@ -4,7 +4,12 @@ pragma solidity ^0.8.0;
 import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
 
 contract Api is Ownable {
-    enum ProductStatus { CREATED, UPDATED, DELETED }
+    enum ProductStatus {
+        CREATED,
+        UPDATED,
+        DELETED,
+        DELIVERIED
+    }
 
     struct Tracking {
         address admin;
@@ -14,8 +19,6 @@ contract Api is Ownable {
         string name;
         string location;
         uint256 trackedTime;
-        // string description;
-        // string[] images;
     }
 
     struct Product {
@@ -35,10 +38,12 @@ contract Api is Ownable {
     }
 
     AllProducts[] getAllProducts;
+    Tracking public removeMe;
 
     event productCreated(string uid, string pid);
     event productUpdated(string uid, string pid);
     event productDeleted(string uid, string pid);
+    event productDeliveried(string uid, string pid);
 
     mapping(string => Product) productList;
     mapping(string => Tracking[]) allTracking;
@@ -51,29 +56,43 @@ contract Api is Ownable {
         return Ownable.owner();
     }
 
-    function checkProductExists(string memory _pid)
-        public
-        view
-        returns (bool)
-    {
+    function checkProductExists(string memory _pid) public view returns (bool) {
         return
             keccak256(abi.encodePacked(productList[_pid].id)) ==
             keccak256(abi.encodePacked(_pid));
     }
 
-    function checkTrackingExists(string memory _pid, string memory _id) public view returns (bool){
-        if (productList[_pid].trackingList.length < 0)
-            return false;
+    function checkTrackingExists(string memory _pid, string memory _id)
+        public
+        view
+        returns (bool)
+    {
+        if (productList[_pid].trackingList.length < 0) return false;
 
-        for(uint i = 0; i < productList[_pid].trackingList.length; i++)
-            if(keccak256(abi.encodePacked(productList[_pid].trackingList[i].id)) ==  keccak256(abi.encodePacked(_id))) 
-                return true;
+        for (uint256 i = 0; i < productList[_pid].trackingList.length; i++)
+            if (
+                keccak256(
+                    abi.encodePacked(productList[_pid].trackingList[i].id)
+                ) == keccak256(abi.encodePacked(_id))
+            ) return true;
     }
 
-    function createProduct(address _admin, string calldata _pid, string calldata _uid, string calldata _name, string calldata _location)
-        external onlyOwner
+    function getStatusProduct(string memory _pid)
+        public
+        view
+        returns (ProductStatus)
     {
-         require(
+        return productList[_pid].status;
+    }
+
+    function createProduct(
+        address _admin,
+        string calldata _pid,
+        string calldata _uid,
+        string calldata _name,
+        string calldata _location
+    ) external onlyOwner {
+        require(
             _admin == Ownable.owner(),
             "You need to be provided administration!"
         );
@@ -87,6 +106,7 @@ contract Api is Ownable {
         productList[_pid].uid = _uid;
         productList[_pid].name = _name;
         productList[_pid].location = _location;
+        productList[_pid].createdTime = block.timestamp;
         productList[_pid].status = ProductStatus.CREATED;
 
         getAllProducts.push(AllProducts(_pid, _uid));
@@ -94,15 +114,72 @@ contract Api is Ownable {
         emit productCreated(_uid, _pid);
     }
 
+    function updateProduct(address _admin, string memory _pid, string memory _uid)
+        external onlyOwner
+        // returns (ProductStatus)
+    {
+        require(
+            _admin == Ownable.owner(),
+            "You need to be provided administration!"
+        );
+        // require(
+        //     checkProductExists(_pid) == true,
+        //     "Product is already existed"
+        // );
+        // require(bytes(_pid).length > 0, "Product id cannot be empty");
+        productList[_pid].status = ProductStatus.UPDATED;
+
+        emit productUpdated(_pid, _uid);
+
+        // return productList[_pid].status;
+    }
+
+    function deliveryProduct(address _admin, string memory _pid, string memory _uid)
+        external
+        // returns (ProductStatus)
+    {
+        require(
+            _admin == Ownable.owner(),
+            "You need to be provided administration!"
+        );
+        // require(
+        //     checkProductExists(_pid) == true,
+        //     "Product is already existed"
+        // );
+        // require(bytes(_pid).length > 0, "Product id cannot be empty");
+
+        productList[_pid].status = ProductStatus.DELIVERIED;
+        emit productUpdated(_pid, _uid);
+
+        // return productList[_pid].status;
+    }
+
+    function deleteProduct(address _admin, string memory _pid, string memory _uid)
+        external
+        // returns (ProductStatus)
+    {
+        require(
+            _admin == Ownable.owner(),
+            "You need to be provided administration!"
+        );
+        // require(
+        //     checkProductExists(_pid) == true,
+        //     "Product is already existed"
+        // );
+        // require(bytes(_pid).length > 0, "Product id cannot be empty");
+
+        productList[_pid].status = ProductStatus.DELETED;
+        emit productUpdated(_pid, _uid);
+
+        // return productList[_pid].status;
+    }
+
     function getProduct(string memory _pid)
         external
         view
         returns (Product memory)
     {
-        require(
-            checkProductExists(_pid) == true,
-            "Product is not created"
-        );
+        require(checkProductExists(_pid) == true, "Product is not created");
         return productList[_pid];
     }
 
@@ -112,10 +189,12 @@ contract Api is Ownable {
         string calldata _uid,
         string calldata _id,
         string calldata _name,
-        string calldata _location,
-        uint256 _trackedTime
+        string calldata _location
+    )
+        external
         // string[] calldata _images
-    ) external onlyOwner {
+        onlyOwner
+    {
         require(checkProductExists(_pid), "Create product first");
         require(checkTrackingExists(_pid, _id) == false, "Tracking is existed");
         // require(checkTrackingExisted(_pid, _uid, _id), "Tracking is existed");
@@ -131,7 +210,7 @@ contract Api is Ownable {
             _id,
             _name,
             _location,
-            _trackedTime
+            block.timestamp
         );
     }
 
@@ -151,7 +230,7 @@ contract Api is Ownable {
             _id,
             _name,
             _location,
-            _trackedTime
+            block.timestamp
         );
         productList[_pid].trackingList.push(newTracking);
     }
@@ -167,6 +246,4 @@ contract Api is Ownable {
     function getAllListProducts() public view returns (AllProducts[] memory) {
         return getAllProducts;
     }
-
-   
 }

@@ -82,7 +82,7 @@ const productController = {
             res.json({
                 success: true,
                 data: products,
-                // dataBC : product
+                dataBC : product
             });
         } catch (e) {
             res.status(500).json({

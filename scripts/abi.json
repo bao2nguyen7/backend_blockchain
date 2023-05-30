@@ -34,6 +34,11 @@
 					"internalType": "string",
 					"name": "_location",
 					"type": "string"
+				},
+				{
+					"internalType": "uint256",
+					"name": "_trackedTime",
+					"type": "uint256"
 				}
 			],
 			"name": "addTracking",

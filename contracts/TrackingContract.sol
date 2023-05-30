@@ -189,7 +189,8 @@ contract Api is Ownable {
         string calldata _uid,
         string calldata _id,
         string calldata _name,
-        string calldata _location
+        string calldata _location,
+        uint256 _trackedTime
     )
         external
         // string[] calldata _images
@@ -210,7 +211,7 @@ contract Api is Ownable {
             _id,
             _name,
             _location,
-            block.timestamp
+            _trackedTime
         );
     }
 
@@ -230,7 +231,7 @@ contract Api is Ownable {
             _id,
             _name,
             _location,
-            block.timestamp
+            _trackedTime
         );
         productList[_pid].trackingList.push(newTracking);
     }

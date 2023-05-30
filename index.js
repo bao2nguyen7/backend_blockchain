@@ -11,6 +11,15 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 // const dotenv = require("dotenv").config();
 const app = express();
+
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST,GET,OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+  next();
+})
+
+
 app.use(express.json());
 app.use(cors());
 
@@ -28,7 +37,6 @@ app.use(authenRouter);
 app.use(productRouter);
 app.use(trackingRouter);
 app.use(processRouter);
-
 
 
 // exports.contractInstance = contractInstance;

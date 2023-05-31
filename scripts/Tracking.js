@@ -41,7 +41,7 @@ async function getListProducts() {
         //     month: '2-digit',
         //     day: '2-digit'
         // }).format(item.createdTime),
-        status: (item.status),
+        status: parseInt(item.status),
     }));
     // console.log(products); 
     return JSON.stringify(products);

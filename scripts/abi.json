@@ -2,7 +2,7 @@
 	"_format": "hh-sol-artifact-1",
 	"contractName": "Api",
 	"sourceName": "contracts/Api.sol",
-	"abi":[
+	"abi": [
 		{
 			"inputs": [
 				{
@@ -287,6 +287,26 @@
 							"internalType": "string",
 							"name": "uid",
 							"type": "string"
+						},
+						{
+							"internalType": "string",
+							"name": "name",
+							"type": "string"
+						},
+						{
+							"internalType": "string",
+							"name": "location",
+							"type": "string"
+						},
+						{
+							"internalType": "uint256",
+							"name": "createdTime",
+							"type": "uint256"
+						},
+						{
+							"internalType": "enum Api.ProductStatus",
+							"name": "status",
+							"type": "uint8"
 						}
 					],
 					"internalType": "struct Api.AllProducts[]",
@@ -541,4 +561,3 @@
 		}
 	]
 }
-

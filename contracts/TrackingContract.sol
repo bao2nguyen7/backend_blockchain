@@ -35,6 +35,10 @@ contract Api is Ownable {
     struct AllProducts {
         string id;
         string uid;
+        string name;
+        string location;
+        uint256 createdTime;
+        ProductStatus status;
     }
 
     AllProducts[] getAllProducts;
@@ -101,15 +105,17 @@ contract Api is Ownable {
             "Product is already existed"
         );
         require(bytes(_pid).length > 0, "Product id cannot be empty");
+        uint256 _currentTime = block.timestamp;
+
         // productList[_pid]. = _pid;
         productList[_pid].id = _pid;
         productList[_pid].uid = _uid;
         productList[_pid].name = _name;
         productList[_pid].location = _location;
-        productList[_pid].createdTime = block.timestamp;
+        productList[_pid].createdTime = _currentTime;
         productList[_pid].status = ProductStatus.CREATED;
 
-        getAllProducts.push(AllProducts(_pid, _uid));
+        getAllProducts.push(AllProducts(_pid, _uid, _name, _location, _currentTime, ProductStatus.CREATED));
 
         emit productCreated(_pid);
     }
@@ -128,6 +134,11 @@ contract Api is Ownable {
         // );
         // require(bytes(_pid).length > 0, "Product id cannot be empty");
         productList[_pid].status = ProductStatus.UPDATED;
+
+        for(uint i = 0; i < getAllProducts.length; i++) {
+            if(keccak256(abi.encodePacked(getAllProducts[i].id)) == keccak256(abi.encodePacked(_pid)))
+                getAllProducts[i].status = ProductStatus.UPDATED;
+        }
 
         emit productUpdated(_pid);
 
@@ -149,6 +160,11 @@ contract Api is Ownable {
         // require(bytes(_pid).length > 0, "Product id cannot be empty");
 
         productList[_pid].status = ProductStatus.DELIVERIED;
+
+        for(uint i = 0; i < getAllProducts.length; i++) {
+            if(keccak256(abi.encodePacked(getAllProducts[i].id)) == keccak256(abi.encodePacked(_pid)))
+                getAllProducts[i].status = ProductStatus.DELIVERIED;
+        }
         emit productDeliveried(_pid);
 
         // return productList[_pid].status;
@@ -169,6 +185,12 @@ contract Api is Ownable {
         // require(bytes(_pid).length > 0, "Product id cannot be empty");
 
         productList[_pid].status = ProductStatus.DELETED;
+
+        for(uint i = 0; i < getAllProducts.length; i++) {
+            if(keccak256(abi.encodePacked(getAllProducts[i].id)) == keccak256(abi.encodePacked(_pid)))
+                getAllProducts[i].status = ProductStatus.DELETED;
+        }
+
         emit productDeleted(_pid);
 
         // return productList[_pid].status;

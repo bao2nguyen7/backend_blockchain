@@ -35,15 +35,15 @@ async function getAllListProducts() {
         uid: item.uid,
         name: item.name,
         address: item.location,
-        time: new Intl.DateTimeFormat('vi-VN', {
-            timeZone: 'Asia/Shanghai',
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit'
-        }).format(item.createdTime),
+        // time: new Intl.DateTimeFormat('vi-VN', {
+        //     timeZone: 'Asia/Shanghai',
+        //     year: 'numeric',
+        //     month: '2-digit',
+        //     day: '2-digit'
+        // }).format(item.createdTime),
         status: parseInt(item.status),
     }));
-    // console.log(products);
+    // console.log(products); 
     return JSON.stringify(products);
 }
 

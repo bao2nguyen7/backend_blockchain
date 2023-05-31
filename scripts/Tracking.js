@@ -27,7 +27,7 @@ async function createProduct(pid, uid, name, address) {
     return receipt;
 }
 
-async function getAllListProducts() {
+async function getListProducts() {
     const allProducts = await contractInstance.getAllListProducts();
 
     const products = allProducts.map(item => ({
@@ -124,6 +124,6 @@ module.exports.getProduct = getProduct;
 module.exports.updateProduct = updateProduct;
 module.exports.deleteProduct = deleteProduct;
 module.exports.deliveryProduct = deliveryProduct;
-module.exports.getAllListProducts = getAllListProducts;
+module.exports.getListProducts = getListProducts;
 module.exports.addTracking = addTracking;
 module.exports.getTracking = getTracking;

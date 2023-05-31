@@ -2,7 +2,7 @@ const Product = require('../models/product');
 const User = require('../models/user');
 const {
     createProduct,
-    getAllListProducts,
+    getListProducts,
     getProduct,
     updateProduct,
     deleteProduct,
@@ -72,7 +72,7 @@ const productController = {
         try {
             const products = await Product.find();
 
-            const productBC = await getAllListProducts();
+            const productBC = await getListProducts();
 
             res.json({
                 success: true,

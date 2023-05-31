@@ -36,8 +36,8 @@ contract Api is Ownable {
         string id;
         string uid;
         string name;
-        string location;
-        uint256 createdTime;
+        // string location;
+        // uint256 createdTime;
         ProductStatus status;
     }
 
@@ -115,7 +115,7 @@ contract Api is Ownable {
         productList[_pid].createdTime = _currentTime;
         productList[_pid].status = ProductStatus.CREATED;
 
-        getAllProducts.push(AllProducts(_pid, _uid, _name, _location, _currentTime, ProductStatus.CREATED));
+        getAllProducts.push(AllProducts(_pid, _uid, _name, ProductStatus.CREATED));
 
         emit productCreated(_pid);
     }

@@ -4,118 +4,6 @@
 	"sourceName": "contracts/Api.sol",
 	"abi": [
 		{
-			"inputs": [
-				{
-					"internalType": "address",
-					"name": "_admin",
-					"type": "address"
-				},
-				{
-					"internalType": "string",
-					"name": "_pid",
-					"type": "string"
-				},
-				{
-					"internalType": "string",
-					"name": "_uid",
-					"type": "string"
-				},
-				{
-					"internalType": "string",
-					"name": "_id",
-					"type": "string"
-				},
-				{
-					"internalType": "string",
-					"name": "_name",
-					"type": "string"
-				},
-				{
-					"internalType": "string",
-					"name": "_location",
-					"type": "string"
-				},
-				{
-					"internalType": "uint256",
-					"name": "_trackedTime",
-					"type": "uint256"
-				}
-			],
-			"name": "addTracking",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "address",
-					"name": "_admin",
-					"type": "address"
-				},
-				{
-					"internalType": "string",
-					"name": "_pid",
-					"type": "string"
-				},
-				{
-					"internalType": "string",
-					"name": "_uid",
-					"type": "string"
-				},
-				{
-					"internalType": "string",
-					"name": "_name",
-					"type": "string"
-				},
-				{
-					"internalType": "string",
-					"name": "_location",
-					"type": "string"
-				}
-			],
-			"name": "createProduct",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "address",
-					"name": "_admin",
-					"type": "address"
-				},
-				{
-					"internalType": "string",
-					"name": "_pid",
-					"type": "string"
-				}
-			],
-			"name": "deleteProduct",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "address",
-					"name": "_admin",
-					"type": "address"
-				},
-				{
-					"internalType": "string",
-					"name": "_pid",
-					"type": "string"
-				}
-			],
-			"name": "deliveryProduct",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
 			"inputs": [],
 			"stateMutability": "nonpayable",
 			"type": "constructor"
@@ -192,26 +80,6 @@
 			"type": "event"
 		},
 		{
-			"inputs": [],
-			"name": "renounceOwnership",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "address",
-					"name": "newOwner",
-					"type": "address"
-				}
-			],
-			"name": "transferOwnership",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
 			"inputs": [
 				{
 					"internalType": "address",
@@ -222,9 +90,34 @@
 					"internalType": "string",
 					"name": "_pid",
 					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "_uid",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "_id",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "_name",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "_location",
+					"type": "string"
+				},
+				{
+					"internalType": "uint256",
+					"name": "_trackedTime",
+					"type": "uint256"
 				}
 			],
-			"name": "updateProduct",
+			"name": "addTracking",
 			"outputs": [],
 			"stateMutability": "nonpayable",
 			"type": "function"
@@ -273,6 +166,75 @@
 			"type": "function"
 		},
 		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_admin",
+					"type": "address"
+				},
+				{
+					"internalType": "string",
+					"name": "_pid",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "_uid",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "_name",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "_location",
+					"type": "string"
+				}
+			],
+			"name": "createProduct",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_admin",
+					"type": "address"
+				},
+				{
+					"internalType": "string",
+					"name": "_pid",
+					"type": "string"
+				}
+			],
+			"name": "deleteProduct",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_admin",
+					"type": "address"
+				},
+				{
+					"internalType": "string",
+					"name": "_pid",
+					"type": "string"
+				}
+			],
+			"name": "deliveryProduct",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
 			"inputs": [],
 			"name": "getAllListProducts",
 			"outputs": [
@@ -292,11 +254,6 @@
 							"internalType": "string",
 							"name": "name",
 							"type": "string"
-						},
-						{
-							"internalType": "enum Api.ProductStatus",
-							"name": "status",
-							"type": "uint8"
 						}
 					],
 					"internalType": "struct Api.AllProducts[]",
@@ -538,6 +495,13 @@
 		},
 		{
 			"inputs": [],
+			"name": "renounceOwnership",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [],
 			"name": "showOwner",
 			"outputs": [
 				{
@@ -547,6 +511,37 @@
 				}
 			],
 			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "newOwner",
+					"type": "address"
+				}
+			],
+			"name": "transferOwnership",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_admin",
+					"type": "address"
+				},
+				{
+					"internalType": "string",
+					"name": "_pid",
+					"type": "string"
+				}
+			],
+			"name": "updateProduct",
+			"outputs": [],
+			"stateMutability": "nonpayable",
 			"type": "function"
 		}
 	]

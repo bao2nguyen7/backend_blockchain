@@ -38,7 +38,7 @@ contract Api is Ownable {
         string name;
         // string location;
         // uint256 createdTime;
-        ProductStatus status;
+        // ProductStatus status;
     }
 
     AllProducts[] getAllProducts;
@@ -115,7 +115,7 @@ contract Api is Ownable {
         productList[_pid].createdTime = _currentTime;
         productList[_pid].status = ProductStatus.CREATED;
 
-        getAllProducts.push(AllProducts(_pid, _uid, _name, ProductStatus.CREATED));
+        getAllProducts.push(AllProducts(_pid, _uid, _name));
 
         emit productCreated(_pid);
     }
@@ -135,10 +135,10 @@ contract Api is Ownable {
         // require(bytes(_pid).length > 0, "Product id cannot be empty");
         productList[_pid].status = ProductStatus.UPDATED;
 
-        for(uint i = 0; i < getAllProducts.length; i++) {
-            if(keccak256(abi.encodePacked(getAllProducts[i].id)) == keccak256(abi.encodePacked(_pid)))
-                getAllProducts[i].status = ProductStatus.UPDATED;
-        }
+        // for(uint i = 0; i < getAllProducts.length; i++) {
+        //     if(keccak256(abi.encodePacked(getAllProducts[i].id)) == keccak256(abi.encodePacked(_pid)))
+        //         getAllProducts[i].status = ProductStatus.UPDATED;
+        // }
 
         emit productUpdated(_pid);
 
@@ -161,10 +161,10 @@ contract Api is Ownable {
 
         productList[_pid].status = ProductStatus.DELIVERIED;
 
-        for(uint i = 0; i < getAllProducts.length; i++) {
-            if(keccak256(abi.encodePacked(getAllProducts[i].id)) == keccak256(abi.encodePacked(_pid)))
-                getAllProducts[i].status = ProductStatus.DELIVERIED;
-        }
+        // for(uint i = 0; i < getAllProducts.length; i++) {
+        //     if(keccak256(abi.encodePacked(getAllProducts[i].id)) == keccak256(abi.encodePacked(_pid)))
+        //         getAllProducts[i].status = ProductStatus.DELIVERIED;
+        // }
         emit productDeliveried(_pid);
 
         // return productList[_pid].status;
@@ -186,10 +186,10 @@ contract Api is Ownable {
 
         productList[_pid].status = ProductStatus.DELETED;
 
-        for(uint i = 0; i < getAllProducts.length; i++) {
-            if(keccak256(abi.encodePacked(getAllProducts[i].id)) == keccak256(abi.encodePacked(_pid)))
-                getAllProducts[i].status = ProductStatus.DELETED;
-        }
+        // for(uint i = 0; i < getAllProducts.length; i++) {
+        //     if(keccak256(abi.encodePacked(getAllProducts[i].id)) == keccak256(abi.encodePacked(_pid)))
+        //         getAllProducts[i].status = ProductStatus.DELETED;
+        // }
 
         emit productDeleted(_pid);
 

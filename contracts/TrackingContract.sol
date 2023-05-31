@@ -35,6 +35,8 @@ contract Api is Ownable {
     struct AllProducts {
         string id;
         string uid;
+        string name;
+        ProductStatus status;
     }
 
     AllProducts[] getAllProducts;
@@ -109,7 +111,8 @@ contract Api is Ownable {
         productList[_pid].createdTime = block.timestamp;
         productList[_pid].status = ProductStatus.CREATED;
 
-        getAllProducts.push(AllProducts(_pid, _uid));
+        getAllProducts.push(AllProducts(_pid, _uid, _name, ProductStatus.CREATED));
+
 
         emit productCreated(_pid);
     }

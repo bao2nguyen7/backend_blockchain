@@ -33,7 +33,7 @@ async function getListProducts() {
     const products = allProducts.map(item => ({
         pid: item.id,
         uid: item.uid,
-        name: item.name,
+        // name: item.name,
         // address: item.location,
         // time: new Intl.DateTimeFormat('vi-VN', {
         //     timeZone: 'Asia/Shanghai',

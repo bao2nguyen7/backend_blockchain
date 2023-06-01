@@ -287,6 +287,21 @@
 							"internalType": "string",
 							"name": "uid",
 							"type": "string"
+						},
+						{
+							"internalType": "string",
+							"name": "name",
+							"type": "string"
+						},
+						{
+							"internalType": "string",
+							"name": "location",
+							"type": "string"
+						},
+						{
+							"internalType": "enum Api.ProductStatus",
+							"name": "status",
+							"type": "uint8"
 						}
 					],
 					"internalType": "struct Api.AllProducts[]",

@@ -21,6 +21,8 @@ async function createProduct(pid, uid, name, address) {
         gasLimit: 300000,
     });
 
+    // console.log(tx);
+
     tx.wait();
 
     let receipt = url + tx.hash;
@@ -33,15 +35,6 @@ async function getListProducts() {
     const products = allProducts.map(item => ({
         pid: item.id,
         uid: item.uid,
-        name: item.name,
-        // address: item.location,
-        // time: new Intl.DateTimeFormat('vi-VN', {
-        //     timeZone: 'Asia/Shanghai',
-        //     year: 'numeric',
-        //     month: '2-digit',
-        //     day: '2-digit'
-        // }).format(item.createdTime),
-        status: parseInt(item.status),
     }));
     // console.log(products); 
     return JSON.stringify(products);

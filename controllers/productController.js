@@ -31,7 +31,7 @@ const productController = {
                 userId: req.user
             });
             const saveProduct = await newProduct.save();
-            console.log("product id: ", saveProduct.id);
+            console.log("product id: ", saveProduct);
             console.log("user id: ", saveProduct.userId);
 
 
@@ -92,11 +92,14 @@ const productController = {
         try {
             const products = await Product.findById(req.params.id);
             const product = await getProduct(req.params.id);
+
             res.json({
                 success: true,
                 data: products,
                 dataBC: product
             });
+
+
         } catch (e) {
             res.status(500).json({
                 success: false,

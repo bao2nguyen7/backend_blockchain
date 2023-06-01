@@ -35,8 +35,9 @@ async function getListProducts() {
     const products = allProducts.map(item => ({
         pid: item.id,
         uid: item.uid,
+        name: item.name,
         address: item.location,
-        status: parseInt(item.status)
+        status: (item.status)
     }));
     // console.log(products); 
     return JSON.stringify(products);

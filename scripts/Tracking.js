@@ -39,8 +39,8 @@ async function getListProducts() {
         address: item.location,
         status: (item.status)
     }));
-    // console.log(products); 
-    return JSON.stringify(products);
+    console.log(JSON.parse(JSON.stringify(products))); 
+    return JSON.parse(JSON.stringify(products));
 }
 
 async function getProduct(pid) {

@@ -73,7 +73,7 @@ const productController = {
             const products = await Product.find();
 
             const productBC = await getListProducts();
-            console.log(productBC) 
+            console.log(productBC)
             res.json({
                 success: true,
                 // data: products,

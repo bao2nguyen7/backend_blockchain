@@ -122,13 +122,21 @@ const productController = {
                 const user = User.findById(req.user);
                 await user.updateOne({
                     $set: {
-                        products: products
+                        products: products.id
                     }
                 });
             }
+            let result = await Product.findOneAndUpdate({
+                _id: products.id
+            }, {
+                url: product
+            }, {
+                new: true
+            });
+            console.log("URL: ", result.url);
             res.status(200).json({
                 success: true,
-                data: products,
+                data: result,
                 dataSC: product,
                 message: "Updated successfully"
             });

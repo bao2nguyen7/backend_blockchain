@@ -33,6 +33,10 @@ const productsSchema = new mongoose.Schema(
       type: String,
       trim: true
     },
+    status:{
+      type: Infinity,
+      trim: true
+    },
     tracking: [
       {
         type: mongoose.Schema.Types.ObjectId,

@@ -34,7 +34,7 @@ const productsSchema = new mongoose.Schema(
       trim: true
     },
     status:{
-      type: String,
+      type: Number,
       trim: true
     },
     tracking: [

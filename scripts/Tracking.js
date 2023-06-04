@@ -39,7 +39,7 @@ async function getListProducts() {
         address: item.location,
         status: (item.status)
     }));
-    console.log(JSON.parse(JSON.stringify(products))); 
+    
     return JSON.parse(JSON.stringify(products));
 }
 
@@ -54,6 +54,7 @@ async function updateProduct(pid) {
         gasLimit: 300000,
     });
 
+    console.log(tx);
     tx.wait();
 
     let receipt = url + tx.hash;

@@ -133,7 +133,7 @@ const productController = {
             }, {
                 new: true
             });
-            console.log("URL ", result.url);
+            console.log("URL: ", result.url);
             res.status(200).json({
                 success: true,
                 data: result,

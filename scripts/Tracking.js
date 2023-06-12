@@ -24,7 +24,7 @@ async function createProduct(pid, uid, name, address) {
     // console.log(tx);
 
     tx.wait();
-
+    // console.log("tx:", tx);
     let receipt = url + tx.hash;
     return receipt;
 }
@@ -46,7 +46,7 @@ async function getListProducts() {
 async function getProduct(pid) {
     const product = await contractInstance.getProduct(pid);
     // console.log(product)
-    return JSON.stringify(product);
+    return product;
 }
 
 async function updateProduct(pid) {
@@ -54,7 +54,7 @@ async function updateProduct(pid) {
         gasLimit: 300000,
     });
 
-    console.log(tx);
+    // console.log(tx);
     tx.wait();
 
     let receipt = url + tx.hash;
@@ -72,26 +72,27 @@ async function deleteProduct(pid) {
     return receipt;
 }
 
-async function deliveryProduct(pid) {
-    const tx = await contractInstance.deliveryProduct(ADMIN_ADDRESS, pid, {
-        gasLimit: 300000,
+async function deliveryProduct(productId, id, name, images, description, time) {
+    const tx = await contractInstance.deliveryProduct(ADMIN_ADDRESS, productId, id, name, images, description, time, {
+        gasLimit: 500000,
     });
 
     tx.wait();
-
+    // console.log("Delivery", tx);
     let receipt = url + tx.hash;
     return receipt;
 }
 
 
-async function addTracking(pid, uid, id, name, address, time) {
-    const tx = await contractInstance.addTracking(ADMIN_ADDRESS, pid, uid, id, name, address, parseInt(time), {
+async function addTracking(productId, id, name, images, description, time) {
+    console.log(productId, id, name, images, description, time);
+
+    const tx = await contractInstance.addTracking(ADMIN_ADDRESS, productId, id, name, images, description, time, {
         gasLimit: 500000
     })
-
     tx.wait();
 
-    let receipt = url + tx.hash;
+    let receipt = url + tx.hash;    
 
     return receipt;
 }
@@ -102,15 +103,11 @@ async function getTracking(pid) {
 
     const trackings = allTrackings.map(tracking => ({
         pid: tracking.pid,
-        uid: tracking.uid,
         id: tracking.id,
         name: tracking.name,
-        location: tracking.location,
-        time: new Intl.DateTimeFormat('en-US', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit'
-        }).format(tracking.trackedTime)
+        images: tracking.images,
+        description: tracking.description,
+        time:tracking.trackedTime
     }))
     return trackings;
 }

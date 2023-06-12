@@ -2,11 +2,7 @@ const mongoose = require("mongoose");
 
 const trackingProductSchema = new mongoose.Schema(
   {
-    userId:{
-      type: String,
-      required: true
-    },
-    productID:{
+    productId:{
       type: String,
       required: true 
     },
@@ -15,11 +11,11 @@ const trackingProductSchema = new mongoose.Schema(
       type: String,
       trim: true
     },
-    status:{
-      required: true,
-      type: Number,
-      default: 0,
-    },
+    // status:{
+    //   required: true,
+    //   type: Number,
+    //   default: 0,
+    // },
     time:{
       required: true,
       type: String,
@@ -29,15 +25,6 @@ const trackingProductSchema = new mongoose.Schema(
       type: String,
       required: true
     },],
-    address:{
-      required: true,
-      type: String,
-      trim: true
-    },
-    detail:{
-      type: String,
-      trim: true
-    },
     description:{
       required: true,
       type: String,

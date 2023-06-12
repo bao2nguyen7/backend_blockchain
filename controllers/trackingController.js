@@ -3,7 +3,8 @@ const Product = require('../models/product');
 const User = require('../models/user');
 const {
     addTracking,
-    getTracking
+    getTracking,
+    deliveryProduct
 } = require('../scripts/Tracking')
 
 
@@ -13,37 +14,34 @@ const trackingController = {
         try {
             const {
                 name,
-                time,
                 images,
-                address,
                 description,
-                url
+                time
             } = req.body;
             const pid = req.params.id;
 
             let newTracking = new Tracking({
+                productId:pid,
                 name,
-                time,
                 images,
-                address,
                 description,
-                productID:pid,
-                url:"",
-                userId: req.user
+                time,
+                url:""
             });
             const saveTracking = await newTracking.save();
             if(pid){
                 const product = Product.findById(pid);
-                console.log("product id:", pid)
                 await product.updateOne({
                     $push: {
                         tracking: saveTracking.id
                     }
                 });
             }
+            // console.log(pid,  saveTracking.id, name, images, description, time);
 
-            const receipt = await addTracking(pid, saveTracking.userId, saveTracking.id, name, address, time);
+            const receipt = await addTracking(pid,  saveTracking.id, name, images, description, time);
             console.log(receipt);
+
             let result = await Tracking.findOneAndUpdate({_id:saveTracking.id},{url: receipt},{new:true});
             console.log("URL: ", result.url);
             return res.json({
@@ -64,7 +62,7 @@ const trackingController = {
         try {
             const tracking = await Tracking.find();
             const track = await getTracking(req.params.id);
-
+            
             res.status(200).json({
                 success: true,
                 dataSC: track,
@@ -88,6 +86,53 @@ const trackingController = {
             res.status(200).json({data:tracking,message:"Delete Successfully"});
         } catch (e) {
             res.status(500).json({ error: e.message });
+        }
+    },
+    
+    deliveried: async(req, res) => {
+        try {
+            const {
+                name,
+                images,
+                description,
+                time
+            } = req.body;
+            const pid = req.params.id;
+
+            let newTracking = new Tracking({
+                productId:pid,
+                name,
+                images,
+                description,
+                time,
+                url:"",
+            });
+            const saveTracking = await newTracking.save();
+            if(pid){
+                const product = Product.findById(pid);
+                // console.log("product id:", pid)
+                await product.updateOne({
+                    $push: {
+                        tracking: saveTracking.id
+                    }
+                });
+            }
+
+            const receipt = await deliveryProduct(pid, saveTracking.id, name, images, description ,time);
+            console.log(receipt);
+            let result = await Tracking.findOneAndUpdate({_id:saveTracking.id},{url: receipt},{new:true});
+            console.log("URL: ", result.url);
+            return res.json({
+                success: true,
+                receipt: receipt,
+                data: result,
+                message: "Tracking added successfully"
+            });
+        } catch (e) {
+            res.status(500).json({
+                success: false,
+                error: e.message
+            });
         }
     }
 };

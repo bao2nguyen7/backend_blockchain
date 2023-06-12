@@ -37,6 +37,7 @@ async function getListProducts() {
         uid: item.uid,
         name: item.name,
         address: item.location,
+        time: item.createdTime,
         status: (item.status)
     }));
     

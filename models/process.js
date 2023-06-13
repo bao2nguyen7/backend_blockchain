@@ -1,34 +1,123 @@
 const mongoose = require("mongoose");
 
-const processesSchema = new mongoose.Schema(
-  {
-    userId:{
-      type: String,
-      trim: true
-    },
-    name:{
+const processesSchema = new mongoose.Schema({
+  userId: {
+    type: String,
+    trim: true
+  },
+  stageProcess: {
+    name: {
       required: true,
       type: String,
       trim: true
     },
-    images:[{
+    images: [{
       type: String,
       required: true
-    },],
-    pId:{ type: String, unique: true, index: true, sparse:true},
-    time:{
+    }, ],
+    timeCreate: {
       type: String,
       trim: true
     },
-    description:{
+    description: {
       type: String,
       trim: true
+    },
+  },
+  stagePlantSeeds: {
+    name: {
+      type: String,
+      trim: true,
+      required: true
+    },
+    description: {
+      type: String,
+      trim: true,
+      // required: true
     }
   },
-  {
-    collection: "processes"
+  stagePlantCare: {
+    name: {
+      type: String,
+      trim: true,
+      // required: true
+    },
+    description: {
+      type: String,
+      trim: true,
+      // required: true
+    },
+    water: {
+      type: String,
+      trim: true,
+      // required: true
+    },
+    fertilizer: {
+      type: String,
+      trim: true,
+      // required: true
+    },
+  },
+  stageBloom: {
+    name: {
+      type: String,
+      trim: true,
+      // required: true
+    },
+    description: {
+      type: String,
+      trim: true,
+      // required: true
+    },
+  },
+  stageCover: {
+    name: {
+      type: String,
+      trim: true,
+      // required: true
+    },
+    description: {
+      type: String,
+      trim: true,
+      // required: true
+    },
+  },
+  stageHarvest: {
+    name: {
+      type: String,
+      trim: true,
+      // required: true
+    },
+    description: {
+      type: String,
+      trim: true,
+      // required: true
+    },
+    quantity: {
+      type: String,
+      trim: true,
+    }
+  },
+  stageSell: {
+    name: {
+      type: String,
+      trim: true,
+      // required: true
+    },
+    description: {
+      type: String,
+      trim: true,
+      // required: true
+    },
+    purchasingUnit: {
+      type: String,
+      trim: true,
+      // required: true
+    },
   }
-);
+}, {
+  collection: "processes"
+});
 
 const processes = mongoose.model("process", processesSchema);
-module.exports = processes; 
+module.exports = processes;

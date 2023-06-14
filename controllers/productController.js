@@ -34,7 +34,7 @@ const productController = {
             });
             const saveProduct = await newProduct.save();
             console.log("product id: ", saveProduct);
-            console.log("user id: ", saveProduct.userId);
+            console.log("user id:", saveProduct.userId);
 
 
             if (req.user) {

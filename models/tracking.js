@@ -11,11 +11,10 @@ const trackingProductSchema = new mongoose.Schema(
       type: String,
       trim: true
     },
-    // status:{
-    //   required: true,
-    //   type: Number,
-    //   default: 0,
-    // },
+    notes:[{
+      type: String,
+      trim: true
+    }],
     time:{
       required: true,
       type: String,

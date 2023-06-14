@@ -7,7 +7,7 @@ const processesSchema = new mongoose.Schema({
   },
   stageProcess: {
     name: {
-      required: true,
+      // required: true,
       type: String,
       trim: true
     },
@@ -28,7 +28,7 @@ const processesSchema = new mongoose.Schema({
     name: {
       type: String,
       trim: true,
-      required: true
+      // required: true
     },
     description: {
       type: String,

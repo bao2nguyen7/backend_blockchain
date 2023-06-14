@@ -19,6 +19,7 @@ const productController = {
                 images,
                 address,
                 description,
+                processId,
                 url
             } = req.body;
             let newProduct = new Product({
@@ -28,7 +29,8 @@ const productController = {
                 address,
                 description,
                 url: "",
-                userId: req.user
+                userId: req.user,
+                processId
             });
             const saveProduct = await newProduct.save();
             console.log("product id: ", saveProduct);

@@ -16,7 +16,8 @@ const trackingController = {
                 name,
                 images,
                 description,
-                time
+                time,
+                // notes
             } = req.body;
             const pid = req.params.id;
 
@@ -26,6 +27,7 @@ const trackingController = {
                 images,
                 description,
                 time,
+                // notes,
                 url:""
             });
             const saveTracking = await newTracking.save();

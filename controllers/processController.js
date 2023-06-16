@@ -19,10 +19,8 @@ const processController = {
         stagePlantCare: {
           name: stagePlantCareName,
           description: stagePlantCareDescription,
-          labelWater: stagePlantCareLabelWater,
-          descriptionWater: stagePlantCareDescriptionWater,
-          labelFertilizer: stagePlantCareLabelFertilizer,
-          descriptionFertilizer: stagePlantCareDescriptionFertilizer,
+          water: stagePlantCareWater,
+          fertilizer: stagePlantCareFertilizer
         },
         stageBloom: {
           name: stageBloomName,
@@ -35,14 +33,12 @@ const processController = {
         stageHarvest: {
           name: stageHarvestName,
           description: stageHarvestDescription,
-          labelQuantity: stagePlantCareLabelQuantity,
-          descriptionQuantity: stagePlantCareDescriptionQuantity,
+          quantity: stageHarvestQuantity
         },
         stageSell: {
           name: stageSellName,
           description: stageSellDescription,
-          labelPurchasingUnit: stagePlantCareLabelPurchasing,
-          descriptionPurchasingUnit: stagePlantCareDescriptionPurchasing,
+          purchasingUnit: stageSellPurchasingUnit
         }
       } = req.body;
       const userId = req.user;
@@ -62,10 +58,8 @@ const processController = {
         stagePlantCare: {
           name: stagePlantCareName,
           description: stagePlantCareDescription,
-          labelWater: stagePlantCareLabelWater,
-          descriptionWater: stagePlantCareDescriptionWater,
-          labelFertilizer: stagePlantCareLabelFertilizer,
-          descriptionFertilizer: stagePlantCareDescriptionFertilizer,
+          water: stagePlantCareWater,
+          fertilizer: stagePlantCareFertilizer
         },
         stageBloom: {
           name: stageBloomName,
@@ -78,14 +72,12 @@ const processController = {
         stageHarvest: {
           name: stageHarvestName,
           description: stageHarvestDescription,
-          labelQuantity: stagePlantCareLabelQuantity,
-          descriptionQuantity: stagePlantCareDescriptionQuantity,
+          quantity: stageHarvestQuantity
         },
         stageSell: {
           name: stageSellName,
           description: stageSellDescription,
-          labelPurchasingUnit: stagePlantCareLabelPurchasing,
-          descriptionPurchasingUnit: stagePlantCareDescriptionPurchasing,
+          purchasingUnit: stageSellPurchasingUnit
         }
       })
       process = await process.save();

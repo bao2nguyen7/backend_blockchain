@@ -17,7 +17,7 @@ const trackingController = {
                 images,
                 description,
                 time,
-                // notes
+                notes
             } = req.body;
             const pid = req.params.id;
 
@@ -27,7 +27,7 @@ const trackingController = {
                 images,
                 description,
                 time,
-                // notes,
+                notes,
                 url:""
             });
             const saveTracking = await newTracking.save();
@@ -41,15 +41,16 @@ const trackingController = {
             }
             // console.log(pid,  saveTracking.id, name, images, description, time);
 
-            const receipt = await addTracking(pid,  saveTracking.id, name, images, description, time);
+            // const receipt = await addTracking(pid,  saveTracking.id, name, images, description, time);
             // console.log(receipt);
 
-            let result = await Tracking.findOneAndUpdate({_id:saveTracking.id},{url: receipt},{new:true});
-            console.log("URL: ", result.url);
+            // let result = await Tracking.findOneAndUpdate({_id:saveTracking.id},{url: receipt},{new:true});
+            // console.log("URL: ", result.url);
             return res.json({
                 success: true,
-                receipt: receipt,
-                data: result,
+                // receipt: receipt,
+                // data: result,
+                data: saveTracking,
                 message: "Tracking added successfully"
             });
         } catch (e) {

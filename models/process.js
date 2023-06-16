@@ -47,12 +47,21 @@ const processesSchema = new mongoose.Schema({
       trim: true,
       // required: true
     },
-    water: {
+    labelWater: {
+      type: String,
+      trim: true,
+    },
+    descriptionWater: {
       type: String,
       trim: true,
       // required: true
     },
-    fertilizer: {
+    labelFertilizer: {
+      type: String,
+      trim: true,
+      // required: true
+    },
+    descriptionFertilizer: {
       type: String,
       trim: true,
       // required: true
@@ -93,10 +102,16 @@ const processesSchema = new mongoose.Schema({
       trim: true,
       // required: true
     },
-    quantity: {
+    labelQuantity: {
       type: String,
       trim: true,
-    }
+      // required: true
+    },
+    descriptionQuantity: {
+      type: String,
+      trim: true,
+      // required: true
+    },
   },
   stageSell: {
     name: {
@@ -109,7 +124,12 @@ const processesSchema = new mongoose.Schema({
       trim: true,
       // required: true
     },
-    purchasingUnit: {
+    labelPurchasingUnit: {
+      type: String,
+      trim: true,
+      // required: true
+    },
+    descriptionPurchasingUnit: {
       type: String,
       trim: true,
       // required: true

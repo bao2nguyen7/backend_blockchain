@@ -124,7 +124,7 @@ const trackingController = {
             }
 
             const receipt = await deliveryProduct(pid, saveTracking.id, name, images, description ,time);
-            console.log(receipt);
+            // console.log(receipt);
             let result = await Tracking.findOneAndUpdate({_id:saveTracking.id},{url: receipt},{new:true});
             console.log("URL: ", result.url);
             return res.json({

@@ -73,9 +73,9 @@ async function deleteProduct(pid) {
     return receipt;
 }
 
-async function deliveryProduct(productId, id, name, images, description, time) {
-    const tx = await contractInstance.deliveryProduct(ADMIN_ADDRESS, productId, id, name, images, description, time, {
-        gasLimit: 500000,
+async function deliveryProduct(productId, id, name, images, description, notes, time) {
+    const tx = await contractInstance.deliveryProduct(ADMIN_ADDRESS, productId, id, name, images, description, notes, time, {
+        gasLimit: 800000,
     });
 
     tx.wait();
@@ -85,11 +85,11 @@ async function deliveryProduct(productId, id, name, images, description, time) {
 }
 
 
-async function addTracking(productId, id, name, images, description, time) {
-    console.log(productId, id, name, images, description, time);
+async function addTracking(productId, id, name, images, description, notes, time) {
+    // console.log(productId, id, name, images, description, notes, time);
 
-    const tx = await contractInstance.addTracking(ADMIN_ADDRESS, productId, id, name, images, description, time, {
-        gasLimit: 500000
+    const tx = await contractInstance.addTracking(ADMIN_ADDRESS, productId, id, name, images, description, notes, time, {
+        gasLimit: 800000
     })
     tx.wait();
 
@@ -108,6 +108,7 @@ async function getTracking(pid) {
         name: tracking.name,
         images: tracking.images,
         description: tracking.description,
+        notes: tracking.notes,
         time:tracking.trackedTime
     }))
     return trackings;

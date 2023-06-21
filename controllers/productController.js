@@ -33,9 +33,6 @@ const productController = {
                 processId
             });
             const saveProduct = await newProduct.save();
-            console.log("product id: ", saveProduct);
-            console.log("user id:", saveProduct.userId);
-
 
             if (req.user) {
                 const user = User.findById(req.user);

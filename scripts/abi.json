@@ -4,82 +4,6 @@
 	"sourceName": "contracts/Api.sol",
 	"abi": [
 		{
-			"inputs": [],
-			"stateMutability": "nonpayable",
-			"type": "constructor"
-		},
-		{
-			"anonymous": false,
-			"inputs": [
-				{
-					"indexed": true,
-					"internalType": "address",
-					"name": "previousOwner",
-					"type": "address"
-				},
-				{
-					"indexed": true,
-					"internalType": "address",
-					"name": "newOwner",
-					"type": "address"
-				}
-			],
-			"name": "OwnershipTransferred",
-			"type": "event"
-		},
-		{
-			"anonymous": false,
-			"inputs": [
-				{
-					"indexed": false,
-					"internalType": "string",
-					"name": "productId",
-					"type": "string"
-				}
-			],
-			"name": "productCreated",
-			"type": "event"
-		},
-		{
-			"anonymous": false,
-			"inputs": [
-				{
-					"indexed": false,
-					"internalType": "string",
-					"name": "productId",
-					"type": "string"
-				}
-			],
-			"name": "productDeleted",
-			"type": "event"
-		},
-		{
-			"anonymous": false,
-			"inputs": [
-				{
-					"indexed": false,
-					"internalType": "string",
-					"name": "productId",
-					"type": "string"
-				}
-			],
-			"name": "productDeliveried",
-			"type": "event"
-		},
-		{
-			"anonymous": false,
-			"inputs": [
-				{
-					"indexed": false,
-					"internalType": "string",
-					"name": "productId",
-					"type": "string"
-				}
-			],
-			"name": "productUpdated",
-			"type": "event"
-		},
-		{
 			"inputs": [
 				{
 					"internalType": "address",
@@ -112,6 +36,11 @@
 					"type": "string"
 				},
 				{
+					"internalType": "string[]",
+					"name": "_notes",
+					"type": "string[]"
+				},
+				{
 					"internalType": "string",
 					"name": "_trackedTime",
 					"type": "string"
@@ -120,49 +49,6 @@
 			"name": "addTracking",
 			"outputs": [],
 			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "string",
-					"name": "_productId",
-					"type": "string"
-				}
-			],
-			"name": "checkProductExists",
-			"outputs": [
-				{
-					"internalType": "bool",
-					"name": "",
-					"type": "bool"
-				}
-			],
-			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "string",
-					"name": "_productId",
-					"type": "string"
-				},
-				{
-					"internalType": "string",
-					"name": "_id",
-					"type": "string"
-				}
-			],
-			"name": "checkTrackingExists",
-			"outputs": [
-				{
-					"internalType": "bool",
-					"name": "",
-					"type": "bool"
-				}
-			],
-			"stateMutability": "view",
 			"type": "function"
 		},
 		{
@@ -254,6 +140,11 @@
 					"type": "string"
 				},
 				{
+					"internalType": "string[]",
+					"name": "_notes",
+					"type": "string[]"
+				},
+				{
 					"internalType": "string",
 					"name": "_deliveryTime",
 					"type": "string"
@@ -262,6 +153,163 @@
 			"name": "deliveryProduct",
 			"outputs": [],
 			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"stateMutability": "nonpayable",
+			"type": "constructor"
+		},
+		{
+			"anonymous": false,
+			"inputs": [
+				{
+					"indexed": true,
+					"internalType": "address",
+					"name": "previousOwner",
+					"type": "address"
+				},
+				{
+					"indexed": true,
+					"internalType": "address",
+					"name": "newOwner",
+					"type": "address"
+				}
+			],
+			"name": "OwnershipTransferred",
+			"type": "event"
+		},
+		{
+			"anonymous": false,
+			"inputs": [
+				{
+					"indexed": false,
+					"internalType": "string",
+					"name": "productId",
+					"type": "string"
+				}
+			],
+			"name": "productCreated",
+			"type": "event"
+		},
+		{
+			"anonymous": false,
+			"inputs": [
+				{
+					"indexed": false,
+					"internalType": "string",
+					"name": "productId",
+					"type": "string"
+				}
+			],
+			"name": "productDeleted",
+			"type": "event"
+		},
+		{
+			"anonymous": false,
+			"inputs": [
+				{
+					"indexed": false,
+					"internalType": "string",
+					"name": "productId",
+					"type": "string"
+				}
+			],
+			"name": "productDeliveried",
+			"type": "event"
+		},
+		{
+			"anonymous": false,
+			"inputs": [
+				{
+					"indexed": false,
+					"internalType": "string",
+					"name": "productId",
+					"type": "string"
+				}
+			],
+			"name": "productUpdated",
+			"type": "event"
+		},
+		{
+			"inputs": [],
+			"name": "renounceOwnership",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "newOwner",
+					"type": "address"
+				}
+			],
+			"name": "transferOwnership",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_admin",
+					"type": "address"
+				},
+				{
+					"internalType": "string",
+					"name": "_productId",
+					"type": "string"
+				}
+			],
+			"name": "updateProduct",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "string",
+					"name": "_productId",
+					"type": "string"
+				}
+			],
+			"name": "checkProductExists",
+			"outputs": [
+				{
+					"internalType": "bool",
+					"name": "",
+					"type": "bool"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "string",
+					"name": "_productId",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "_id",
+					"type": "string"
+				}
+			],
+			"name": "checkTrackingExists",
+			"outputs": [
+				{
+					"internalType": "bool",
+					"name": "",
+					"type": "bool"
+				}
+			],
+			"stateMutability": "view",
 			"type": "function"
 		},
 		{
@@ -389,6 +437,11 @@
 									"type": "string"
 								},
 								{
+									"internalType": "string[]",
+									"name": "notes",
+									"type": "string[]"
+								},
+								{
 									"internalType": "string",
 									"name": "trackedTime",
 									"type": "string"
@@ -469,6 +522,11 @@
 							"type": "string"
 						},
 						{
+							"internalType": "string[]",
+							"name": "notes",
+							"type": "string[]"
+						},
+						{
 							"internalType": "string",
 							"name": "trackedTime",
 							"type": "string"
@@ -497,13 +555,6 @@
 		},
 		{
 			"inputs": [],
-			"name": "renounceOwnership",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [],
 			"name": "showOwner",
 			"outputs": [
 				{
@@ -513,37 +564,6 @@
 				}
 			],
 			"stateMutability": "view",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "address",
-					"name": "newOwner",
-					"type": "address"
-				}
-			],
-			"name": "transferOwnership",
-			"outputs": [],
-			"stateMutability": "nonpayable",
-			"type": "function"
-		},
-		{
-			"inputs": [
-				{
-					"internalType": "address",
-					"name": "_admin",
-					"type": "address"
-				},
-				{
-					"internalType": "string",
-					"name": "_productId",
-					"type": "string"
-				}
-			],
-			"name": "updateProduct",
-			"outputs": [],
-			"stateMutability": "nonpayable",
 			"type": "function"
 		}
 	]

@@ -39,18 +39,18 @@ const trackingController = {
                     }
                 });
             }
-            // console.log(pid,  saveTracking.id, name, images, description, time);
+            // console.log(pid,  saveTracking.id, name, images, description, notes, time);
 
-            // const receipt = await addTracking(pid,  saveTracking.id, name, images, description, time);
-            // console.log(receipt);
+            const receipt = await addTracking(pid,  saveTracking.id, name, images, description, notes, time);
+            console.log(receipt);
 
-            // let result = await Tracking.findOneAndUpdate({_id:saveTracking.id},{url: receipt},{new:true});
-            // console.log("URL: ", result.url);
+            let result = await Tracking.findOneAndUpdate({_id:saveTracking.id},{url: receipt},{new:true});
+            console.log("URL: ", result.url);
             return res.json({
                 success: true,
-                // receipt: receipt,
-                // data: result,
-                data: saveTracking,
+                receipt: receipt,
+                data: result,
+                // data: saveTracking,
                 message: "Tracking added successfully"
             });
         } catch (e) {
@@ -123,8 +123,8 @@ const trackingController = {
                 });
             }
 
-            const receipt = await deliveryProduct(pid, saveTracking.id, name, images, description ,time);
-            // console.log(receipt);
+            const receipt = await deliveryProduct(pid, saveTracking.id, name, images, description, notes, time);
+            console.log(receipt);
             let result = await Tracking.findOneAndUpdate({_id:saveTracking.id},{url: receipt},{new:true});
             console.log("URL: ", result.url);
             return res.json({

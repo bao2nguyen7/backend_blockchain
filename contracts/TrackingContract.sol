@@ -14,10 +14,11 @@ contract Api is Ownable {
     struct Tracking {
         address admin;
         string productId;
-        string description;
         string id;
         string name;
         string[] images;
+        string description;
+        string[] notes;
         string trackedTime;
     }
 
@@ -175,10 +176,11 @@ contract Api is Ownable {
     function deliveryProduct(
         address _admin,
         string memory _productId,
-        string calldata _description,
         string calldata _id,
         string calldata _name,
         string[] memory _images,
+        string calldata _description,
+        string[] memory _notes,
         string memory _deliveryTime
     ) external onlyOwner {
        require(checkProductExists(_productId), "Create product first");
@@ -197,10 +199,11 @@ contract Api is Ownable {
         _addTracking(
             _admin,
             productList[_productId].id,
-            _description,
             _id,
             _name,
             _images,
+            _description,
+            _notes,
             _deliveryTime
         );
 
@@ -254,10 +257,11 @@ contract Api is Ownable {
     function addTracking(
         address _admin,
         string memory _productId,
-        string calldata _description,
         string calldata _id,
         string calldata _name,
         string[] memory _images,
+        string calldata _description,
+        string[] memory _notes,
         string memory _trackedTime
     ) external onlyOwner {
         require(checkProductExists(_productId), "Create product first");
@@ -274,10 +278,11 @@ contract Api is Ownable {
         _addTracking(
             _admin,
             productList[_productId].id,
-            _description,
             _id,
             _name,
             _images,
+            _description,
+            _notes,
             _trackedTime
         );
     }
@@ -285,19 +290,21 @@ contract Api is Ownable {
     function _addTracking(
         address _admin,
         string memory _productId,
-        string memory _description,
         string memory _id,
         string memory _name,
         string[] memory _images,
+        string memory _description,
+        string[] memory _notes,
         string memory _trackedTime
     ) internal onlyOwner {
         Tracking memory newTracking = Tracking(
             _admin,
             _productId,
-            _description,
             _id,
             _name,
             _images,
+            _description,
+            _notes,
             _trackedTime
         );
         productList[_productId].trackingList.push(newTracking);

@@ -34,7 +34,7 @@ async function getListProducts() {
 
     const products = allProducts.map(item => ({
         pid: item.id,
-        uid: item.uid,
+        uid: item.userId,
         name: item.name,
         address: item.location,
         time: item.createdTime,

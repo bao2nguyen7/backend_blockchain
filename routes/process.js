@@ -6,9 +6,9 @@ const processController = require('../controllers/processController');
 // Add process
 processRouter.post("/process/add-process", process, processController.addProcess);
 
-processRouter.get("/process/get-processes", processController.getProcess);
+processRouter.get("/process/get-processes", processController.getAllProcess);
 
-processRouter.get("/process/get-process/:id",  processController.getAProcess);
+processRouter.get("/process/get-process/:id",  processController.getProcess);
 
 processRouter.put("/process/update-process/:id", process, processController.updateProcess);
 

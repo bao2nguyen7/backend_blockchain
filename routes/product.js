@@ -8,7 +8,7 @@ productRouter.post("/product/add-product", product, productController.addProduct
 //getAll product
 productRouter.get("/product/get-product", product,productController.getAllProduct);
 //getAn product
-productRouter.get("/product/get-product/:id", product, productController.getAnProduct);
+productRouter.get("/product/get-product/:id", product, productController.getProduct);
 //update product
 productRouter.put("/product/update-product/:id", product, productController.updateProduct);
   // Delete the product

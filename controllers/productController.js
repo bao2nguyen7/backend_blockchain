@@ -86,8 +86,8 @@ const productController = {
             });
         }
     },
-    //getAnProduct
-    getAnProduct: async (req, res) => {
+    //getProduct
+    getProduct: async (req, res) => {
         try {
             const products = await Product.findById(req.params.id);
             const product = await getProduct(req.params.id);

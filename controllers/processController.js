@@ -90,7 +90,7 @@ const processController = {
   },
 
   // get All Processes
-  getProcess: async (req, res) => {
+  getAllProcess: async (req, res) => {
     try {
       const Processes = await Process.find({});
       res.json({
@@ -104,8 +104,8 @@ const processController = {
     }
   },
 
-  // get A Process
-  getAProcess: async (req, res) => {
+  // get a Process
+  getProcess: async (req, res) => {
     try {
       const Processes = await Process.findOne({
         _id: req.params.id

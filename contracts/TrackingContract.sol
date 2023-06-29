@@ -1,9 +1,12 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.9;
 
 import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
+import "../node_modules/@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import "../node_modules/@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol";
 
-contract Api is Ownable {
+contract Api is Ownable, EIP712 {
+    using ECDSA for bytes32;
     enum ProductStatus {
         CREATED,
         UPDATED,
@@ -52,8 +55,12 @@ contract Api is Ownable {
     mapping(string => Product) productList;
     mapping(string => Tracking[]) allTracking;
 
-    constructor() {
-        // owner = msg.sender;
+    address public signer;
+
+    constructor(string memory _name, string memory _version)
+        EIP712(_name, _version)
+    {
+        signer = msg.sender;
     }
 
     function showOwner() public view returns (address) {
@@ -89,18 +96,6 @@ contract Api is Ownable {
             ) return true;
     }
 
-    //  function verify(string memory _aString, string memory _productId, bytes memory _signature) internal view returns (address){
-    //     bytes32 digest = _hashTypedDataV4(keccak256(abi.encode(
-    //             keccak256("Product(string aString, string _productId)"),
-    //             keccak256(bytes(_aString)),
-    //             _productId
-    //         )));
-    //     address signer = ECDSA.recover(digest, _signature);
-    //     require(signer == msg.sender, "MessageVerifier: invalid signature");
-    //     require(signer != address(0), "ECDSAUpgradeable: invalid signature");
-    //     return signer;
-    // }
-
     function getStatusProduct(string memory _productId)
         public
         view
@@ -109,31 +104,81 @@ contract Api is Ownable {
         return productList[_productId].status;
     }
 
+    function validateAmountFunction(
+        string calldata _productId,
+        string calldata _userId,
+         string calldata _name,
+        string calldata _location,
+        string calldata _createdTime,
+        bytes memory _signature
+    ) internal view returns (address) {
+        bytes32 digest = _hashTypedDataV4(
+            keccak256(
+                abi.encode(
+                    keccak256("Product(string _productId, string _userId, string _name, string _location, string _createdTime)"),
+                    keccak256(bytes(_productId)),
+                    keccak256(bytes(_userId)),
+                    keccak256(bytes(_name)),
+                    keccak256(bytes(_location)),
+                    keccak256(bytes(_createdTime))
+                )
+            )
+        );
+        address signer = ECDSA.recover(digest, _signature);
+        // require(signer == msg.sender, "MessageVerifier: invalid signature");
+        // require(signer != address(0), "ECDSAUpgradeable: invalid signature");
+        return signer;
+    }
+
+    // function generateSignature(string memory _productId, string memory _userId) public pure returns (bytes memory) {
+    //     bytes32 messageHash = keccak256(abi.encodePacked(_productId, _userId));
+    //     bytes32 prefixedHash = keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", messageHash));
+    //     (bytes32 r, bytes32 s, uint256 v) = ecrecover(prefixedHash, 0, 0, 0);
+    //     return abi.encodePacked(r, s, v);
+    // }
+
+    function testValidation(
+        string calldata _productId,
+        string calldata _userId,
+         string calldata _name,
+        string calldata _location,
+        string calldata _createdTime,
+        bytes memory _signature
+    ) public view returns (address) {
+        return validateAmountFunction(_productId, _userId, _name, _location, _createdTime, _signature);
+    }
+
+     function verify(
+        address _signer,
+        bytes32 _ethSignedMessageHash,
+        bytes32 r,
+        bytes32 s,
+        uint8 v
+    ) public pure returns (bool) {
+        address expectedSigner = ecrecover(_ethSignedMessageHash, v, r, s);
+        return expectedSigner == _signer;
+    }
+
     function createProduct(
-        address _admin,
+        address admin,
         string calldata _productId,
         string calldata _userId,
         string calldata _name,
         string calldata _location,
         string calldata _createdTime
     ) external onlyOwner {
-        require(
-            _admin == Ownable.owner(),
-            "You need to be provided administration!"
-        );
+        // require(verify(msg.sender, digest, r, s, v), "Invalid signature");
         require(
             checkProductExists(_productId) == false,
             "Product is already existed"
         );
         require(bytes(_productId).length > 0, "Product id cannot be empty");
-        // uint256 _currentTime = block.timestamp;
-
+        
         productList[_productId].id = _productId;
         productList[_productId].userId = _userId;
         productList[_productId].name = _name;
         productList[_productId].location = _location;
         productList[_productId].createdTime = _createdTime;
-
         productList[_productId].status = ProductStatus.CREATED;
 
         getAllProducts.push(
@@ -150,6 +195,7 @@ contract Api is Ownable {
         emit productCreated(_productId);
     }
 
+
     function updateProduct(address _admin, string memory _productId)
         external
         onlyOwner
@@ -158,8 +204,14 @@ contract Api is Ownable {
             _admin == Ownable.owner(),
             "You need to be provided administration!"
         );
-        require(productList[_productId].status != ProductStatus.DELETED, "Product is deleted, You can not update information");
-        require(productList[_productId].status != ProductStatus.DELIVERIED, "Product is deliveried, You can not update information");
+        require(
+            productList[_productId].status != ProductStatus.DELETED,
+            "Product is deleted, You can not update information"
+        );
+        require(
+            productList[_productId].status != ProductStatus.DELIVERIED,
+            "Product is deliveried, You can not update information"
+        );
 
         productList[_productId].status = ProductStatus.UPDATED;
 
@@ -183,13 +235,19 @@ contract Api is Ownable {
         string[] memory _notes,
         string memory _deliveryTime
     ) external onlyOwner {
-       require(checkProductExists(_productId), "Create product first");
+        require(checkProductExists(_productId), "Create product first");
         require(
             checkTrackingExists(_productId, _id) == false,
             "Tracking is existed"
         );
-        require(productList[_productId].status != ProductStatus.DELETED, "Product is deleted, You can not delivery!!!");
-        require(productList[_productId].status != ProductStatus.DELIVERIED, "Product is deliveried, You can not delivery again!!!");
+        require(
+            productList[_productId].status != ProductStatus.DELETED,
+            "Product is deleted, You can not delivery!!!"
+        );
+        require(
+            productList[_productId].status != ProductStatus.DELIVERIED,
+            "Product is deliveried, You can not delivery again!!!"
+        );
         // require(checkTrackingExisted(_productId, _userId, _id), "Tracking is existed");
         require(
             _admin == Ownable.owner(),
@@ -226,8 +284,14 @@ contract Api is Ownable {
             _admin == Ownable.owner(),
             "You need to be provided administration!"
         );
-        require(productList[_productId].status != ProductStatus.DELETED, "Product is deleted, You can not delete again!!!");
-        require(productList[_productId].status != ProductStatus.DELIVERIED, "Product is deliveried, You can not delete product!!!");
+        require(
+            productList[_productId].status != ProductStatus.DELETED,
+            "Product is deleted, You can not delete again!!!"
+        );
+        require(
+            productList[_productId].status != ProductStatus.DELIVERIED,
+            "Product is deliveried, You can not delete product!!!"
+        );
 
         productList[_productId].status = ProductStatus.DELETED;
 
@@ -322,3 +386,4 @@ contract Api is Ownable {
         return getAllProducts;
     }
 }
+

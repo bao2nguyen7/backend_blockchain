@@ -6,117 +6,35 @@ const processesSchema = new mongoose.Schema({
     trim: true
   },
   stageProcess: {
-    name: {
-      // required: true,
-      type: String,
-      trim: true
-    },
-    images: [{
-      type: String,
-      required: true
-    }, ],
-    timeCreate: {
-      type: String,
-      trim: true
-    },
-    description: {
-      type: String,
-      trim: true
-    },
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "stageProcess"
   },
   stagePlantSeeds: {
-    name: {
-      type: String,
-      trim: true,
-      // required: true
-    },
-    description: {
-      type: String,
-      trim: true,
-      // required: true
-    }
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "stagePlantSeeds"
   },
   stagePlantCare: {
-    name: {
-      type: String,
-      trim: true,
-      // required: true
-    },
-    description: {
-      type: String,
-      trim: true,
-      // required: true
-    },
-    water: {
-      type: String,
-      trim: true,
-      // required: true
-    },
-    fertilizer: {
-      type: String,
-      trim: true,
-      // required: true
-    },
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "stagePlantCare"
   },
   stageBloom: {
-    name: {
-      type: String,
-      trim: true,
-      // required: true
-    },
-    description: {
-      type: String,
-      trim: true,
-      // required: true
-    },
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "stageBloom"
   },
   stageCover: {
-    name: {
-      type: String,
-      trim: true,
-      // required: true
-    },
-    description: {
-      type: String,
-      trim: true,
-      // required: true
-    },
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "stageCover"
   },
   stageHarvest: {
-    name: {
-      type: String,
-      trim: true,
-      // required: true
-    },
-    description: {
-      type: String,
-      trim: true,
-      // required: true
-    },
-    quantity: {
-      type: String,
-      trim: true,
-    }
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "stageHarvest"
   },
   stageSell: {
-    name: {
-      type: String,
-      trim: true,
-      // required: true
-    },
-    description: {
-      type: String,
-      trim: true,
-      // required: true
-    },
-    purchasingUnit: {
-      type: String,
-      trim: true,
-      // required: true
-    },
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "stageSell"
   }
 }, {
-  collection: "processes"
+  collection: "process"
 });
 
 const processes = mongoose.model("process", processesSchema);

@@ -6,7 +6,7 @@ const {
     getProduct,
     updateProduct,
     deleteProduct,
-    deliveryProduct
+    verifyProduct
 } = require('../scripts/Tracking')
 
 const productController = {
@@ -42,17 +42,23 @@ const productController = {
                     }
                 });
             }
+            const verify = await verifyProduct(saveProduct.id, saveProduct.userId, saveProduct.name, saveProduct.address, saveProduct.time);
+            console.log("Verify: ", verify);    
+            let receipt = "";
+            let result = "";
+            if (verify == true) {
+                receipt = await createProduct(saveProduct.id, saveProduct.userId, saveProduct.name, saveProduct.address, saveProduct.time);
+                result = await Product.findOneAndUpdate({
+                    _id: saveProduct.id
+                }, {
+                    url: receipt
+                }, {
+                    new: true
+                });
+                console.log("URL: ", result.url); 
 
-            const receipt = await createProduct(saveProduct.id, saveProduct.userId, saveProduct.name, saveProduct.address);
-            console.log("recript", receipt);
-            let result = await Product.findOneAndUpdate({
-                _id: saveProduct.id
-            }, {
-                url: receipt
-            }, {
-                new: true
-            });
-            console.log("URL: ", result.url);
+            }
+
             return res.json({
                 success: true,
                 receipt: receipt,
@@ -72,7 +78,7 @@ const productController = {
             const products = await Product.find();
 
             const productBC = await getListProducts();
-            console.log(productBC)
+            // console.log(productBC)
             res.json({
                 success: true,
                 // data: products,
@@ -159,7 +165,7 @@ const productController = {
             let product = await Product.findByIdAndDelete(req.params.id);
             const p = await deleteProduct(req.params.id);
             console.log(p)
-            
+
             res.status(200).json({
                 data: product,
                 dataSC: p,

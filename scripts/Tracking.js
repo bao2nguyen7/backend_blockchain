@@ -146,7 +146,7 @@ async function addTracking(productId, id, name, images, description, notes, time
 
     let receipt = url + tx.hash;
     let urlStatus = urlGetStatus + tx.hash + `&apikey=` + API_KEY;
-    console.log("status tracking", urlStatus);
+    // console.log("status tracking", urlStatus);
 
     let status = ""
     await fetch(urlStatus)
@@ -155,18 +155,7 @@ async function addTracking(productId, id, name, images, description, notes, time
             console.log(data);
             // Access the required properties
             status = data.status;
-            const message = data.message;
-            const result = data.result;
-
-            // Access the nested properties
-            const isError = result.isError;
-            const errDescription = result.errDescription;
-
-            // Use the retrieved values
             console.log("Status:", status);
-            console.log("Message:", message);
-            console.log("isError:", isError);
-            console.log("errDescription:", errDescription);
         })
         .catch((error) => {
             console.error("Error:", error);
@@ -176,7 +165,7 @@ async function addTracking(productId, id, name, images, description, notes, time
 
 
 async function getTracking(pid) {
-    const allTrackings = await contractInstance.getTrackingList(pid);
+    const allTrackings = await contractInstance.getTrackingList(pid.productId);
 
     const trackings = allTrackings.map(tracking => ({
         pid: tracking.pid,

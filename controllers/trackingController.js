@@ -28,11 +28,11 @@ const trackingController = {
             // console.log(pid,  saveTracking.id, name, images, description, notes, time);
 
             const receipt = await addTracking(pid, id, name, images, description, notes, time);
-            console.log(receipt);
+            // console.log(receipt.receipt);
 
-            let newTracking;
+            let saveTracking;
             if (receipt.status === "1") {
-                newTracking = new Tracking({
+                let newTracking = new Tracking({
                     trackingId: id,
                     productId: pid,
                     name,
@@ -42,23 +42,23 @@ const trackingController = {
                     notes,
                     url: receipt.receipt
                 });
-                const saveTracking = await newTracking.save();
-                if (pid) {
-                    const product = Product.findById(pid);
-                    await product.updateOne({
-                        $push: {
-                            tracking: saveTracking.trackingId
-                        }
-                    });
-                }
-                console.log("URL: ", saveTracking);
+                saveTracking = await newTracking.save();
+                // console.log("URL: ", saveTracking);
+
+                const product = await Product.findOne({productId: saveTracking.productId});
+                // console.log("product", product);
+
+                await product.updateOne({
+                    $push: {
+                        tracking: saveTracking.id
+                    }
+                });
 
             }
             return res.json({
                 success: true,
                 receipt: receipt,
-                data: newTracking,
-                // data: saveTracking,
+                data: saveTracking,
                 message: "Tracking added successfully"
             });
         } catch (e) {
@@ -72,7 +72,8 @@ const trackingController = {
     getTracking: async (req, res) => {
         try {
             const tracking = await Tracking.find();
-            const track = await getTracking(req.params.id);
+            const track = await getTracking({productId: req.params.id});
+            // console.log(track);
 
             res.status(200).json({
                 success: true,
@@ -110,6 +111,8 @@ const trackingController = {
 
     deliveried: async (req, res) => {
         try {
+            const id = uniqid();
+            console.log("tracking id", id);
             const {
                 name,
                 images,
@@ -119,40 +122,41 @@ const trackingController = {
             } = req.body;
             const pid = req.params.id;
 
-            let newTracking = new Tracking({
-                productId: pid,
-                name,
-                images,
-                description,
-                time,
-                notes,
-                url: "",
-            });
-            const saveTracking = await newTracking.save();
-            if (pid) {
-                const product = Product.findById(pid);
-                // console.log("product id:", pid)
+
+            // console.log(pid,  saveTracking.id, name, images, description, notes, time);
+
+            const receipt = await deliveryProduct(pid, id, name, images, description, notes, time);
+            // console.log(receipt.status);
+
+            let saveTracking;
+            if (receipt.status === "1") {
+                let newTracking = new Tracking({
+                    trackingId: id,
+                    productId: pid,
+                    name,
+                    images,
+                    description,
+                    time,
+                    notes,
+                    url: receipt.receipt
+                });
+                saveTracking = await newTracking.save();
+                // console.log("URL: ", saveTracking);
+
+                const product = await Product.findOne({productId: saveTracking.productId});
+                console.log("product", product);
+
                 await product.updateOne({
                     $push: {
                         tracking: saveTracking.id
                     }
                 });
-            }
 
-            const receipt = await deliveryProduct(pid, saveTracking.id, name, images, description, notes, time);
-            console.log(receipt);
-            let result = await Tracking.findOneAndUpdate({
-                _id: saveTracking.id
-            }, {
-                url: receipt
-            }, {
-                new: true
-            });
-            console.log("URL: ", result.url);
+            }
             return res.json({
                 success: true,
                 receipt: receipt,
-                data: result,
+                data: saveTracking,
                 message: "Tracking added successfully"
             });
         } catch (e) {

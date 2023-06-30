@@ -4,6 +4,7 @@ const ethers = require("ethers")
 // } = require("./signMessage")
 require('dotenv').config();
 const API_URL = process.env.API_URL;
+const API_KEY = process.env.API_KEY;
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
 const contractAddress = process.env.CONTRACT_ADDRESS;
 const ADMIN_ADDRESS = process.env.ADMIN_ADDRESS;
@@ -13,6 +14,7 @@ const {
 } = require("./abi.json");
 
 const url = "https://sepolia.etherscan.io/tx/";
+const urlGetStatus = `https://api.etherscan.io/api?module=transaction&action=getstatus&txhash=`;
 
 const provider = new ethers.providers.JsonRpcProvider(API_URL);
 const signer = new ethers.Wallet(PRIVATE_KEY, provider);
@@ -43,13 +45,39 @@ async function verifyProduct(id, userId, name, location, createdTime) {
 }
 
 async function createProduct(id, userId, name, location, createdTime) {
-    const tx = await contractInstance.createProduct(ADMIN_ADDRESS ,id, userId, name, location, createdTime, {
+    const tx = await contractInstance.createProduct(ADMIN_ADDRESS, id, userId, name, location, createdTime, {
         gasLimit: 2000000,
     });
 
     tx.wait();
     let receipt = url + tx.hash;
-    return receipt;
+    let urlStatus = urlGetStatus + tx.hash + `&apikey=` + API_KEY;
+    console.log("status", urlStatus);
+
+    let status = ""
+    await fetch(urlStatus)
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+            // Access the required properties
+            status = data.status;
+            const message = data.message;
+            const result = data.result;
+
+            // Access the nested properties
+            const isError = result.isError;
+            const errDescription = result.errDescription;
+
+            // Use the retrieved values
+            console.log("Status:", status);
+            console.log("Message:", message);
+            console.log("isError:", isError);
+            console.log("errDescription:", errDescription);
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+    return {receipt: receipt, status: status};
 }
 
 async function getListProducts() {

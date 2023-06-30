@@ -8,61 +8,64 @@ const {
     deleteProduct,
     verifyProduct
 } = require('../scripts/Tracking')
+const uniqid = require('uniqid');
+
 
 const productController = {
     //addProduct
     addProduct: async (req, res) => {
         try {
+
+            const id = uniqid();
+            console.log("uniqid", id);
             const {
                 name,
                 time,
                 images,
                 address,
                 description,
-                processId,
-                url
-            } = req.body;
-            let newProduct = new Product({
-                name,
-                time,
-                images,
-                address,
-                description,
-                url: "",
-                userId: req.user,
                 processId
-            });
-            const saveProduct = await newProduct.save();
-
-            if (req.user) {
-                const user = User.findById(req.user);
-                await user.updateOne({
-                    $push: {
-                        products: saveProduct.id
-                    }
-                });
-            }
-            const verify = await verifyProduct(saveProduct.id, saveProduct.userId, saveProduct.name, saveProduct.address, saveProduct.time);
-            console.log("Verify: ", verify);    
+            } = req.body;
+            console.log("adding")
+            const verify = await verifyProduct(id, "649d8cdbc53a31877e12023b", name, address, time);
+            console.log("Verify: ", verify);
             let receipt = "";
             let result = "";
             if (verify == true) {
-                receipt = await createProduct(saveProduct.id, saveProduct.userId, saveProduct.name, saveProduct.address, saveProduct.time);
-                result = await Product.findOneAndUpdate({
-                    _id: saveProduct.id
-                }, {
-                    url: receipt
-                }, {
-                    new: true
+                receipt = await createProduct(id, "649d8cdbc53a31877e12023b", name, address, time);
+                // console.log("URL: ", receipt.receipt, "status", receipt.status);
+            }
+            let saveProduct;
+            if (receipt.status === "1") {
+                let newProduct = new Product({
+                    productId: id,
+                    name,
+                    time,
+                    images,
+                    address,
+                    description,
+                    url: receipt.receipt,
+                    userId: req.user,
+                    processId
                 });
-                console.log("URL: ", result.url); 
+                saveProduct = await newProduct.save();
+
+                console.log("saveProduct", saveProduct);
+                if (req.user) {
+                    const user = User.findById(req.user);
+                    await user.updateOne({
+                        $push: {
+                            products: saveProduct.id
+                        }
+                    });
+                }
 
             }
 
             return res.json({
                 success: true,
                 receipt: receipt,
-                data: result,
+                data: saveProduct,
                 message: "Product added successfully"
             });
         } catch (e) {
@@ -76,6 +79,7 @@ const productController = {
     getAllProduct: async (req, res) => {
         try {
             const products = await Product.find();
+
 
             const productBC = await getListProducts();
             // console.log(productBC)

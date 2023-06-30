@@ -26,7 +26,7 @@ const productController = {
                 description,
                 processId
             } = req.body;
-            console.log("adding")
+            // console.log("adding")
             const userId = req.user;
             console.log("userId", userId);
             const verify = await verifyProduct(id, userId, name, address, time);

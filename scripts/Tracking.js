@@ -145,8 +145,33 @@ async function addTracking(productId, id, name, images, description, notes, time
     tx.wait();
 
     let receipt = url + tx.hash;
+    let urlStatus = urlGetStatus + tx.hash + `&apikey=` + API_KEY;
+    console.log("status tracking", urlStatus);
 
-    return receipt;
+    let status = ""
+    await fetch(urlStatus)
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+            // Access the required properties
+            status = data.status;
+            const message = data.message;
+            const result = data.result;
+
+            // Access the nested properties
+            const isError = result.isError;
+            const errDescription = result.errDescription;
+
+            // Use the retrieved values
+            console.log("Status:", status);
+            console.log("Message:", message);
+            console.log("isError:", isError);
+            console.log("errDescription:", errDescription);
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+    return {receipt: receipt, status: status};
 }
 
 

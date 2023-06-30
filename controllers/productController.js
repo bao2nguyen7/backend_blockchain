@@ -27,12 +27,13 @@ const productController = {
                 processId
             } = req.body;
             console.log("adding")
-            const verify = await verifyProduct(id, "649d8cdbc53a31877e12023b", name, address, time);
+            const userId = req.user;
+            console.log("userId", userId);
+            const verify = await verifyProduct(id, userId, name, address, time);
             console.log("Verify: ", verify);
             let receipt = "";
-            let result = "";
             if (verify == true) {
-                receipt = await createProduct(id, "649d8cdbc53a31877e12023b", name, address, time);
+                receipt = await createProduct(id, userId, name, address, time);
                 // console.log("URL: ", receipt.receipt, "status", receipt.status);
             }
             let saveProduct;
@@ -50,7 +51,7 @@ const productController = {
                 });
                 saveProduct = await newProduct.save();
 
-                console.log("saveProduct", saveProduct);
+                // console.log("saveProduct", saveProduct);
                 if (req.user) {
                     const user = User.findById(req.user);
                     await user.updateOne({
@@ -99,9 +100,11 @@ const productController = {
     //getProduct
     getProduct: async (req, res) => {
         try {
-            const products = await Product.findById(req.params.id);
+            const products = await Product.findOne({
+                productId: req.params.id
+            });
             const product = await getProduct(req.params.id);
-
+            // console.log("get product", product);
             res.json({
                 success: true,
                 data: products,

@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 
 const trackingProductSchema = new mongoose.Schema(
   {
+    trackingId:{
+      type: String,
+      required: true 
+    },
     productId:{
       type: String,
       required: true 

@@ -8,6 +8,7 @@ const API_KEY = process.env.API_KEY;
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
 const contractAddress = process.env.CONTRACT_ADDRESS;
 const ADMIN_ADDRESS = process.env.ADMIN_ADDRESS;
+import fetch from "node-fetch";
 
 const {
     abi

@@ -45,7 +45,9 @@ const trackingController = {
                 saveTracking = await newTracking.save();
                 // console.log("URL: ", saveTracking);
 
-                const product = await Product.findOne({productId: saveTracking.productId});
+                const product = await Product.findOne({
+                    productId: saveTracking.productId
+                });
                 // console.log("product", product);
 
                 await product.updateOne({
@@ -72,7 +74,9 @@ const trackingController = {
     getTracking: async (req, res) => {
         try {
             const tracking = await Tracking.find();
-            const track = await getTracking({productId: req.params.id});
+            const track = await getTracking({
+                productId: req.params.id
+            });
             // console.log(track);
 
             res.status(200).json({
@@ -88,27 +92,6 @@ const trackingController = {
             });
         }
     },
-    deleteTracking: async (req, res) => {
-        try {
-            await Product.updateMany({
-                tracking: req.params.id
-            }, {
-                $pull: {
-                    tracking: req.params.id
-                }
-            });
-            let tracking = await Tracking.findByIdAndDelete(req.params.id);
-            res.status(200).json({
-                data: tracking,
-                message: "Delete Successfully"
-            });
-        } catch (e) {
-            res.status(500).json({
-                error: e.message
-            });
-        }
-    },
-
     deliveried: async (req, res) => {
         try {
             const id = uniqid();
@@ -143,7 +126,9 @@ const trackingController = {
                 saveTracking = await newTracking.save();
                 // console.log("URL: ", saveTracking);
 
-                const product = await Product.findOne({productId: saveTracking.productId});
+                const product = await Product.findOne({
+                    productId: saveTracking.productId
+                });
                 console.log("product", product);
 
                 await product.updateOne({

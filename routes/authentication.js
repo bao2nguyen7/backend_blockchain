@@ -15,5 +15,7 @@ authenRouter.get("/", auth, authController.getAllAuth);
 authenRouter.get("/getAnAuth", auth, authController.getAnAuth);
 //GetEachUserInAdmin
 authenRouter.get("/admin/:id", auth, authController.getUserFromAdmin);
+//UpdateProfile
+authenRouter.put("/updateProfile", auth, authController.updateProfile);
 
 module.exports = authenRouter;

@@ -1,7 +1,4 @@
-const ethers = require("ethers")
-// const {
-//     signMessage
-// } = require("./signMessage")
+const ethers = require("ethers");
 require('dotenv').config();
 const API_URL = process.env.API_URL;
 const API_KEY = process.env.API_KEY;

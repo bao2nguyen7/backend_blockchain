@@ -96,7 +96,7 @@ const processController = {
       const saveStageHarvest = await stageHarvestSAVE.save();
       const saveStageSell = await stageSellSAVE.save();
 
-      console.log(saveStagePlantSeeds);
+      // console.log(saveStagePlantSeeds);
 
       let process = new Process({
         userId,
@@ -110,7 +110,7 @@ const processController = {
       })
 
       process = await process.save();
-      console.log(process);
+      // console.log(process);
 
       res.json(process);
     } catch (e) {
@@ -233,11 +233,131 @@ const processController = {
   updateProcess: async (req, res) => {
     try {
       // let Processes = await Process.findOne({_id: req.params.id});
-      let Processes = await Process.updateOne({
+
+      const {
+        stageProcess: {
+          name: stageProcessName,
+          description: stageProcessDescription,
+          images: stageProcessImages,
+          timeCreate: stageProcessTime
+        },
+        stagePlantSeeds: {
+          name: stagePlantSeedsName,
+          description: stagePlantSeedsDescription
+        },
+        stagePlantCare: {
+          name: stagePlantCareName,
+          description: stagePlantCareDescription,
+          water: stagePlantCareWater,
+          fertilizer: stagePlantCareFertilizer
+        },
+        stageBloom: {
+          name: stageBloomName,
+          description: stageBloomDescription
+        },
+        stageCover: {
+          name: stageCoverName,
+          description: stageCoverDescription
+        },
+        stageHarvest: {
+          name: stageHarvestName,
+          description: stageHarvestDescription,
+          quantity: stageHarvestQuantity
+        },
+        stageSell: {
+          name: stageSellName,
+          description: stageSellDescription,
+          purchasingUnit: stageSellPurchasingUnit
+        }
+      } = req.body;
+
+      let Processes = await Process.findOne({
         _id: req.params.id
-      }, {
-        $set: req.body
       })
+      
+      const stageProcessUpdate = await stageProcessDB.updateOne({
+        _id: Processes.stageProcess._id
+      }, {
+        $set: {
+          name: stageProcessName,
+          description: stageProcessDescription,
+          images: stageProcessImages,
+          timeCreate: stageProcessTime
+        }
+      })
+      const stagePlantSeedsUpdate = await stagePlantSeedsDB.updateOne({
+        _id: Processes.stagePlantSeeds._id
+      }, {
+        $set: {
+          name: stagePlantSeedsName,
+          description: stagePlantSeedsDescription
+        }
+      })
+      const stagePlantCareUpdate = await stagePlantCareDB.updateOne({
+        _id: Processes.stagePlantCare._id
+      }, {
+        $set: {
+          name: stagePlantCareName,
+          description: stagePlantCareDescription,
+          water: stagePlantCareWater,
+          fertilizer: stagePlantCareFertilizer
+        }
+      })
+      const stageBloomUpdate = await stageBloomDB.updateOne({
+        _id: Processes.stageBloom._id
+      }, {
+        $set: {
+          name: stageBloomName,
+          description: stageBloomDescription
+        }
+      })
+      const stageCoverUpdate = await stageCoverDB.updateOne({
+        _id: Processes.stageCover._id
+      }, {
+        $set: {
+          name: stageCoverName,
+          description: stageCoverDescription
+        }
+      })
+      const stageHarvestUpdate = await stageHarvestDB.updateOne({
+        _id: Processes.stageHarvest._id
+      }, {
+        $set: {
+          name: stageHarvestName,
+          description: stageHarvestDescription,
+          quantity: stageHarvestQuantity
+        }
+      })
+      const stageSellUpdate = await stageSellDB.updateOne({
+        _id: Processes.stageSell._id
+      }, {
+        $set: {
+          name: stageSellName,
+          description: stageSellDescription,
+          purchasingUnit: stageSellPurchasingUnit
+        }
+      })
+
+      const view = await stageProcessDB.findOne({
+        _id: Processes.stageProcess._id
+      })
+
+      console.log(view);
+
+      const updateProcess = {
+        stageProcessUpdate,
+        stagePlantSeedsUpdate,
+        stagePlantCareUpdate,
+        stageBloomUpdate,
+        stageCoverUpdate,
+        stageHarvestUpdate,
+        stageSellUpdate
+      }
+
+      Processes = await Process.updateOne({
+        _id: req.params.id
+      }, updateProcess)
+
       res.json({
         sucess: true,
         data: Processes

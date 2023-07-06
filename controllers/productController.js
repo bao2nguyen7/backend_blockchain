@@ -22,6 +22,7 @@ const productController = {
                 name,
                 time,
                 images,
+                certificates,
                 address,
                 description,
                 processId
@@ -32,35 +33,37 @@ const productController = {
             const verify = await verifyProduct(id, userId, name, address, time);
             console.log("Verify: ", verify);
             let receipt = "";
+            let saveProduct;
+
             if (verify == true) {
                 receipt = await createProduct(id, userId, name, address, time);
                 // console.log("URL: ", receipt.receipt, "status", receipt.status);
-            }
-            let saveProduct;
-            if (receipt.status === "1") {
-                let newProduct = new Product({
-                    productId: id,
-                    name,
-                    time,
-                    images,
-                    address,
-                    description,
-                    url: receipt.receipt,
-                    userId: req.user,
-                    processId
-                });
-                saveProduct = await newProduct.save();
-
-                // console.log("saveProduct", saveProduct);
-                if (req.user) {
-                    const user = User.findById(req.user);
-                    await user.updateOne({
-                        $push: {
-                            products: saveProduct.id
-                        }
+                if (receipt.status === "1") {
+                    let newProduct = new Product({
+                        productId: id,
+                        name,
+                        time,
+                        images,
+                        certificates,
+                        address,
+                        description,
+                        url: receipt.receipt,
+                        userId: req.user,
+                        processId
                     });
-                }
+                    saveProduct = await newProduct.save();
 
+                    console.log("saveProduct", saveProduct);
+                    if (req.user) {
+                        const user = User.findById(req.user);
+                        await user.updateOne({
+                            $push: {
+                                products: saveProduct.id
+                            }
+                        });
+                    }
+
+                }
             }
 
             return res.json({
@@ -80,7 +83,6 @@ const productController = {
     getAllProduct: async (req, res) => {
         try {
             const products = await Product.find();
-
 
             const productBC = await getListProducts();
             // console.log(productBC)
@@ -122,13 +124,13 @@ const productController = {
     //updateProduct
     updateProduct: async (req, res) => {
         try {
-            const products = await Product.findById(req.params.id);
+            const products = await Product.findOne({productId: req.params.id});
             await products.updateOne({
                 $set: req.body
             });
 
             const product = await updateProduct(req.params.id);
-            console.log(product)
+            // console.log(product)
 
             if (req.user) {
                 const user = User.findById(req.user);
@@ -169,7 +171,9 @@ const productController = {
                     products: req.params.id
                 }
             });
-            let product = await Product.findByIdAndDelete(req.params.id);
+            let product = await Product.findOneAndDelete({
+                productId: req.params.id
+            });
             const p = await deleteProduct(req.params.id);
             console.log(p)
 

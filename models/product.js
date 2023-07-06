@@ -22,7 +22,11 @@ const productsSchema = new mongoose.Schema({
   images: [{
     type: String,
     required: true
-  }, ],
+  }],
+  certificates: [{
+    type: String,
+    required: true
+  }],
   address: {
     required: true,
     type: String,

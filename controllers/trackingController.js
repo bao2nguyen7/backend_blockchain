@@ -124,12 +124,12 @@ const trackingController = {
                     url: receipt.receipt
                 });
                 saveTracking = await newTracking.save();
-                // console.log("URL: ", saveTracking);
+                // console.log("URL: ", receipt.receipt);
 
                 const product = await Product.findOne({
                     productId: saveTracking.productId
                 });
-                console.log("product", product);
+                // console.log("product", product);
 
                 await product.updateOne({
                     $push: {

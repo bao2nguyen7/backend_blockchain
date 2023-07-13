@@ -128,9 +128,23 @@ async function deliveryProduct(productId, id, name, images, description, notes, 
     });
 
     tx.wait();
-    // console.log("Delivery", tx);
     let receipt = url + tx.hash;
-    return receipt;
+    let urlStatus = urlGetStatus + tx.hash + `&apikey=` + API_KEY;
+    // console.log("status tracking", urlStatus);
+
+    let status = ""
+    await fetch(urlStatus)
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+            // Access the required properties
+            status = data.status;
+            console.log("Status:", status);
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+    return {receipt: receipt, status: status};
 }
 
 

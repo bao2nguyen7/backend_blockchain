@@ -124,7 +124,9 @@ const productController = {
     //updateProduct
     updateProduct: async (req, res) => {
         try {
-            const products = await Product.findOne({productId: req.params.id});
+            const products = await Product.findOne({
+                productId: req.params.id
+            });
             await products.updateOne({
                 $set: req.body
             });
@@ -164,21 +166,20 @@ const productController = {
     //deleteProduct
     deleteProduct: async (req, res) => {
         try {
-            await User.updateMany({
-                products: req.params.id
-            }, {
-                $pull: {
-                    products: req.params.id
-                }
-            });
-            let product = await Product.findOneAndDelete({
-                productId: req.params.id
-            });
+            console.log(req.params.id);
+            // await User.updateMany({
+            //     products: req.params.id
+            // }, {
+            //     $pull: {
+            //         products: req.params.id
+            //     }
+            // });
+            // let product = await Product.findByIdAndDelete(req.params.id);
             const p = await deleteProduct(req.params.id);
             console.log(p)
 
             res.status(200).json({
-                data: product,
+                // data: product,
                 dataSC: p,
                 message: "Delete Successfully"
             });

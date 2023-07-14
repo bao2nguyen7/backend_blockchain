@@ -29,7 +29,7 @@ const productController = {
             } = req.body;
             // console.log("adding")
             const userId = req.user;
-            console.log("userId", userId);
+            // console.log("userId", userId);
             const verify = await verifyProduct(id, userId, name, address, time);
             console.log("Verify: ", verify);
             let receipt = "";
@@ -53,7 +53,7 @@ const productController = {
                     });
                     saveProduct = await newProduct.save();
 
-                    console.log("saveProduct", saveProduct);
+                    // console.log("saveProduct", saveProduct);
                     if (req.user) {
                         const user = User.findById(req.user);
                         await user.updateOne({

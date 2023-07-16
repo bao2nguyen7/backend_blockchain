@@ -69,8 +69,8 @@ async function createProduct(id, userId, name, location, createdTime) {
             // Use the retrieved values
             console.log("Status:", status);
             console.log("Message:", message);
-            console.log("isError:", isError);
-            console.log("errDescription:", errDescription);
+            // console.log("isError:", isError);
+            // console.log("errDescription:", errDescription);
         })
         .catch((error) => {
             console.error("Error:", error);
@@ -101,7 +101,7 @@ async function getProduct(pid) {
 
 async function updateProduct(pid) {
     const tx = await contractInstance.updateProduct(ADMIN_ADDRESS, pid, {
-        gasLimit: 300000,
+        gasLimit: 2000000,
     });
 
     // console.log(tx);
@@ -113,7 +113,7 @@ async function updateProduct(pid) {
 
 async function deleteProduct(pid) {
     const tx = await contractInstance.deleteProduct(ADMIN_ADDRESS, pid, {
-        gasLimit: 300000,
+        gasLimit: 2000000,
     });
 
     tx.wait();
@@ -124,7 +124,7 @@ async function deleteProduct(pid) {
 
 async function deliveryProduct(productId, id, name, images, description, notes, time) {
     const tx = await contractInstance.deliveryProduct(ADMIN_ADDRESS, productId, id, name, images, description, notes, time, {
-        gasLimit: 800000,
+        gasLimit: 2000000,
     });
 
     tx.wait();
@@ -152,7 +152,7 @@ async function addTracking(productId, id, name, images, description, notes, time
     // console.log(productId, id, name, images, description, notes, time);
 
     const tx = await contractInstance.addTracking(ADMIN_ADDRESS, productId, id, name, images, description, notes, time, {
-        gasLimit: 800000
+        gasLimit: 2000000
     })
     tx.wait();
 

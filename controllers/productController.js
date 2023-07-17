@@ -53,7 +53,6 @@ const productController = {
                     });
                     saveProduct = await newProduct.save();
 
-                    // console.log("saveProduct", saveProduct);
                     if (req.user) {
                         const user = User.findById(req.user);
                         await user.updateOne({

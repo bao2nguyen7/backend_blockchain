@@ -20,175 +20,230 @@ const signer = new ethers.Wallet(PRIVATE_KEY, provider);
 const contractInstance = new ethers.Contract(contractAddress, abi, signer);
 
 async function verifyProduct(id, userId, name, location, createdTime) {
-    const message = ethers.utils.solidityPack(
-        ['string', 'string', 'string', 'string', 'string'],
-        [id, userId, name, location, createdTime]
-    );
+    try {
+        const message = ethers.utils.solidityPack(
+            ['string', 'string', 'string', 'string', 'string'],
+            [id, userId, name, location, createdTime]
+        );
 
-    let hash = ethers.utils.keccak256(ethers.utils.solidityPack(["string"], [message])); //variant of abi.encodePacked function in solidity
+        let hash = ethers.utils.keccak256(ethers.utils.solidityPack(["string"], [message])); //variant of abi.encodePacked function in solidity
 
-    const sig = await signer.signMessage(ethers.utils.arrayify(hash));
-    // console.log("sig", sig);
-    const ethHash = ethers.utils.keccak256(ethers.utils.solidityPack(["string", "bytes32"], ["\x19Ethereum Signed Message:\n32", hash]));
-    // console.log("Signer Address: ", signer.address);
-    const {
-        v,
-        r,
-        s
-    } = ethers.utils.splitSignature(sig);
-    let bool = await contractInstance.verify(signer.address, ethHash, r, s, v);
-    // console.log("Signer matched? " + bool);
+        const sig = await signer.signMessage(ethers.utils.arrayify(hash));
+        // console.log("sig", sig);
+        const ethHash = ethers.utils.keccak256(ethers.utils.solidityPack(["string", "bytes32"], ["\x19Ethereum Signed Message:\n32", hash]));
+        // console.log("Signer Address: ", signer.address);
+        const {
+            v,
+            r,
+            s
+        } = ethers.utils.splitSignature(sig);
+        let bool = await contractInstance.verify(signer.address, ethHash, r, s, v);
+        // console.log("Signer matched? " + bool);
 
-    return bool;
+        return bool;
+    } catch (error) {
+        console.error("Error updating product:", error.message);
+        throw error;
+    }
 }
 
 async function createProduct(id, userId, name, location, createdTime) {
-    const tx = await contractInstance.createProduct(ADMIN_ADDRESS, id, userId, name, location, createdTime, {
-        gasLimit: 2000000,
-    });
-
-    tx.wait();
-    let receipt = url + tx.hash;
-    let urlStatus = urlGetStatus + tx.hash + `&apikey=` + API_KEY;
-    console.log("status", urlStatus);
-
-    let status = ""
-    await fetch(urlStatus)
-        .then((response) => response.json())
-        .then((data) => {
-            console.log(data);
-            // Access the required properties
-            status = data.status;
-            const message = data.message;
-            const result = data.result;
-
-            // Access the nested properties
-            const isError = result.isError;
-            const errDescription = result.errDescription;
-
-            // Use the retrieved values
-            console.log("Status:", status);
-            console.log("Message:", message);
-            // console.log("isError:", isError);
-            // console.log("errDescription:", errDescription);
-        })
-        .catch((error) => {
-            console.error("Error:", error);
+    try {
+        const tx = await contractInstance.createProduct(ADMIN_ADDRESS, id, userId, name, location, createdTime, {
+            gasLimit: 2000000,
         });
-    return {receipt: receipt, status: status};
+
+        tx.wait();
+        let receipt = url + tx.hash;
+        let urlStatus = urlGetStatus + tx.hash + `&apikey=` + API_KEY;
+        console.log("status", urlStatus);
+
+        let status = ""
+        await fetch(urlStatus)
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                // Access the required properties
+                status = data.status;
+                const message = data.message;
+                const result = data.result;
+
+                // Access the nested properties
+                const isError = result.isError;
+                const errDescription = result.errDescription;
+
+                // Use the retrieved values
+                console.log("Status:", status);
+                console.log("Message:", message);
+                // console.log("isError:", isError);
+                // console.log("errDescription:", errDescription);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+        return {
+            receipt: receipt,
+            status: status
+        };
+    } catch (error) {
+        console.error("Error updating product:", error.message);
+        throw error;
+    }
 }
 
 async function getListProducts() {
-    const allProducts = await contractInstance.getAllListProducts();
+    try {
 
-    const products = allProducts.map(item => ({
-        pid: item.id,
-        uid: item.userId,
-        name: item.name,
-        address: item.location,
-        time: item.createdTime,
-        status: (item.status)
-    }));
+        const allProducts = await contractInstance.getAllListProducts();
 
-    return JSON.parse(JSON.stringify(products));
+        const products = allProducts.map(item => ({
+            pid: item.id,
+            uid: item.userId,
+            name: item.name,
+            address: item.location,
+            time: item.createdTime,
+            status: (item.status)
+        }));
+
+        return JSON.parse(JSON.stringify(products));
+    } catch (error) {
+        console.error("Error updating product:", error.message);
+        throw error;
+    }
 }
 
 async function getProduct(pid) {
-    const product = await contractInstance.getProduct(pid);
-    // console.log(product)
-    return product;
+    try {
+        const product = await contractInstance.getProduct(pid);
+        // console.log(product)
+        return product;
+    } catch (error) {
+        console.error("Error updating product:", error.message);
+        throw error;
+    }
 }
 
 async function updateProduct(pid) {
-    const tx = await contractInstance.updateProduct(ADMIN_ADDRESS, pid, {
-        gasLimit: 2000000,
-    });
+    try {
+        const tx = await contractInstance.updateProduct(ADMIN_ADDRESS, pid, {
+            gasLimit: 300000,
+        });
 
-    // console.log(tx);
-    tx.wait();
+        // Wait for the transaction to be confirmed
+        await tx.wait();
 
-    let receipt = url + tx.hash;
-    return receipt;
+        let receipt = url + tx.hash;
+        return receipt;
+    } catch (error) {
+        console.error("Error updating product:", error.message);
+        throw error;
+    }
 }
 
 async function deleteProduct(pid) {
-    const tx = await contractInstance.deleteProduct(ADMIN_ADDRESS, pid, {
-        gasLimit: 2000000,
-    });
+    try {
+        const tx = await contractInstance.deleteProduct(ADMIN_ADDRESS, pid, {
+            gasLimit: 2000000,
+        });
 
-    tx.wait();
+        tx.wait();
 
-    let receipt = url + tx.hash;
-    return receipt;
+        let receipt = url + tx.hash;
+        return receipt;
+    } catch (error) {
+        console.error("Error updating product:", error.message);
+        throw error;
+    }
 }
 
 async function deliveryProduct(productId, id, name, images, description, notes, time) {
-    const tx = await contractInstance.deliveryProduct(ADMIN_ADDRESS, productId, id, name, images, description, notes, time, {
-        gasLimit: 2000000,
-    });
-
-    tx.wait();
-    let receipt = url + tx.hash;
-    let urlStatus = urlGetStatus + tx.hash + `&apikey=` + API_KEY;
-    // console.log("status tracking", urlStatus);
-
-    let status = ""
-    await fetch(urlStatus)
-        .then((response) => response.json())
-        .then((data) => {
-            console.log(data);
-            // Access the required properties
-            status = data.status;
-            console.log("Status:", status);
-        })
-        .catch((error) => {
-            console.error("Error:", error);
+    try {
+        const tx = await contractInstance.deliveryProduct(ADMIN_ADDRESS, productId, id, name, images, description, notes, time, {
+            gasLimit: 2000000,
         });
-    return {receipt: receipt, status: status};
+
+        tx.wait();
+        let receipt = url + tx.hash;
+        let urlStatus = urlGetStatus + tx.hash + `&apikey=` + API_KEY;
+        // console.log("status tracking", urlStatus);
+
+        let status = ""
+        await fetch(urlStatus)
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                // Access the required properties
+                status = data.status;
+                console.log("Status:", status);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+        return {
+            receipt: receipt,
+            status: status
+        };
+    } catch (error) {
+        console.error("Error updating product:", error.message);
+        throw error;
+    }
 }
 
 
 async function addTracking(productId, id, name, images, description, notes, time) {
     // console.log(productId, id, name, images, description, notes, time);
-
-    const tx = await contractInstance.addTracking(ADMIN_ADDRESS, productId, id, name, images, description, notes, time, {
-        gasLimit: 2000000
-    })
-    tx.wait();
-
-    let receipt = url + tx.hash;
-    let urlStatus = urlGetStatus + tx.hash + `&apikey=` + API_KEY;
-    // console.log("status tracking", urlStatus);
-
-    let status = ""
-    await fetch(urlStatus)
-        .then((response) => response.json())
-        .then((data) => {
-            console.log(data);
-            // Access the required properties
-            status = data.status;
-            console.log("Status:", status);
+    try {
+        const tx = await contractInstance.addTracking(ADMIN_ADDRESS, productId, id, name, images, description, notes, time, {
+            gasLimit: 2000000
         })
-        .catch((error) => {
-            console.error("Error:", error);
-        });
-    return {receipt: receipt, status: status};
+        tx.wait();
+
+        let receipt = url + tx.hash;
+        let urlStatus = urlGetStatus + tx.hash + `&apikey=` + API_KEY;
+        // console.log("status tracking", urlStatus);
+
+        let status = ""
+        await fetch(urlStatus)
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                // Access the required properties
+                status = data.status;
+                console.log("Status:", status);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+        return {
+            receipt: receipt,
+            status: status
+        };
+    } catch (error) {
+        console.error("Error updating product:", error.message);
+        throw error;
+    }
 }
 
 
 async function getTracking(pid) {
-    const allTrackings = await contractInstance.getTrackingList(pid.productId);
+    try {
+        const allTrackings = await contractInstance.getTrackingList(pid.productId);
 
-    const trackings = allTrackings.map(tracking => ({
-        pid: tracking.pid,
-        id: tracking.id,
-        name: tracking.name,
-        images: tracking.images,
-        description: tracking.description,
-        notes: tracking.notes,
-        time: tracking.trackedTime
-    }))
-    return trackings;
+        const trackings = allTrackings.map(tracking => ({
+            pid: tracking.pid,
+            id: tracking.id,
+            name: tracking.name,
+            images: tracking.images,
+            description: tracking.description,
+            notes: tracking.notes,
+            time: tracking.trackedTime
+        }))
+        return trackings;
+
+    } catch (error) {
+        console.error("Error updating product:", error.message);
+        throw error;
+    }
 }
 
 module.exports.createProduct = createProduct;

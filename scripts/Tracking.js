@@ -126,7 +126,7 @@ async function getProduct(pid) {
 async function updateProduct(pid) {
     try {
         const tx = await contractInstance.updateProduct(ADMIN_ADDRESS, pid, {
-            gasLimit: 300000,
+            gasLimit: 2000000,
         });
 
         // Wait for the transaction to be confirmed

@@ -129,7 +129,6 @@ const trackingController = {
                 const product = await Product.findOne({
                     productId: saveTracking.productId
                 });
-                // console.log("product", product);
 
                 await product.updateOne({
                     $push: {

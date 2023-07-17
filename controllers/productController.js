@@ -37,7 +37,6 @@ const productController = {
 
             if (verify == true) {
                 receipt = await createProduct(id, userId, name, address, time);
-                // console.log("URL: ", receipt.receipt, "status", receipt.status);
                 if (receipt.status === "1") {
                     let newProduct = new Product({
                         productId: id,

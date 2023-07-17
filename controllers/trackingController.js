@@ -105,9 +105,6 @@ const trackingController = {
             } = req.body;
             const pid = req.params.id;
 
-
-            // console.log(pid,  saveTracking.id, name, images, description, notes, time);
-
             const receipt = await deliveryProduct(pid, id, name, images, description, notes, time);
             // console.log(receipt.status);
 

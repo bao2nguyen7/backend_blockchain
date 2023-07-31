@@ -121,7 +121,6 @@ const trackingController = {
                     url: receipt.receipt
                 });
                 saveTracking = await newTracking.save();
-                // console.log("URL: ", receipt.receipt);
 
                 const product = await Product.findOne({
                     productId: saveTracking.productId

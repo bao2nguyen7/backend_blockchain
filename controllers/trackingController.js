@@ -106,7 +106,6 @@ const trackingController = {
             const pid = req.params.id;
 
             const receipt = await deliveryProduct(pid, id, name, images, description, notes, time);
-            // console.log(receipt.status);
 
             let saveTracking;
             if (receipt.status === "1") {

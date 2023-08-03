@@ -63,12 +63,10 @@ async function createProduct(id, userId, name, location, createdTime) {
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
-                // Access the required properties
                 status = data.status;
                 const message = data.message;
                 const result = data.result;
 
-                // Access the nested properties
                 const isError = result.isError;
                 const errDescription = result.errDescription;
 

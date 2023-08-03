@@ -204,7 +204,6 @@ async function addTracking(productId, id, name, images, description, notes, time
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
-                // Access the required properties
                 status = data.status;
                 console.log("Status:", status);
             })

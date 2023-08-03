@@ -24,11 +24,7 @@ const trackingController = {
             } = req.body;
             const pid = req.params.id;
 
-
-            // console.log(pid,  saveTracking.id, name, images, description, notes, time);
-
             const receipt = await addTracking(pid, id, name, images, description, notes, time);
-            // console.log(receipt.receipt);
 
             let saveTracking;
             if (receipt.status === "1") {

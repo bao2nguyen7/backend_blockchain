@@ -189,7 +189,6 @@ async function deliveryProduct(productId, id, name, images, description, notes, 
 
 
 async function addTracking(productId, id, name, images, description, notes, time) {
-    // console.log(productId, id, name, images, description, notes, time);
     try {
         const tx = await contractInstance.addTracking(ADMIN_ADDRESS, productId, id, name, images, description, notes, time, {
             gasLimit: 2000000
